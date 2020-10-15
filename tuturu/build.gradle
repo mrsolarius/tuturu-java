@@ -11,4 +11,6 @@ repositories {
 
 dependencies {
     testCompile group: 'junit', name: 'junit', version: '4.12'
+    compileOnly "sax:sax:2.0.1"
 }
+
