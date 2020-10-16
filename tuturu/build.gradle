@@ -12,5 +12,6 @@ repositories {
 dependencies {
     testCompile group: 'junit', name: 'junit', version: '4.12'
     compileOnly "sax:sax:2.0.1"
+    compile group: 'org.w3c', name: 'dom', version: '2.3.0-jaxb-1.0.6'
 }
 
