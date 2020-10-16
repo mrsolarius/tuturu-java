@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<students>
+    <student id="1">
+        <name>jean pierre</name>
+        <surname>le veau</surname>
+        <group>LP CASIR</group>
+    </student>
+    <student id="2">
+        <name>Rose</name>
+        <surname>Tailor</surname>
+        <group>British school of london</group>
+    </student>
+    <student id="3">
+        <name>Emy</name>
+        <surname>Pond</surname>
+        <group>British school of london</group>
+    </student>
+    <student id="4">
+        <name>Tim</name>
+        <surname>Gimenez</surname>
+        <group>LP CASIR</group>
+    </student>
+    <student id="4">
+        <name>Louis</name>
+        <surname>Volat</surname>
+        <group>LP CASIR</group>
+    </student>
+</students>
