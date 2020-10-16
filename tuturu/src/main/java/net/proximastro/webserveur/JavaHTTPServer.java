@@ -16,7 +16,7 @@ import java.util.StringTokenizer;
 // chaque client et récupérer dans un seul thread
 public class JavaHTTPServer implements Runnable{
 
-    static final File WEB_ROOT = new File(".");
+    static final File WEB_ROOT = new File("./tuturu/src/main/resources/public");
     static final String DEFAULT_FILE = "index.html";
     static final String FILE_NOT_FOUND = "404.html";
     static final String METHOD_NOT_SUPPORTED = "not_supported.html";
@@ -63,6 +63,7 @@ public class JavaHTTPServer implements Runnable{
         String fileRequested = null;
 
         try {
+
             // récupération de la requete avec un buffer reader
             in = new BufferedReader(new InputStreamReader(connect.getInputStream()));
             // récupération du flux pour l'imprimer
@@ -77,12 +78,17 @@ public class JavaHTTPServer implements Runnable{
             String method = parse.nextToken().toUpperCase(); // récupération de la methode du client
             // récupération du fichier de la requete
             fileRequested = parse.nextToken().toLowerCase();
-
+            ControllerManager ctrlm = new ControllerManager();
+            ctrlm.getControllerFromPath(fileRequested);
             // Verification de la methode
             if (!method.equals("GET")  &&  !method.equals("HEAD")) {
+
                 if (verbose) {
                     System.out.println("501 La methode : " + method + " n'est pas implementer.");
                 }
+                //Importation des routes et création du controller manager
+
+
 
                 // renvoie du fichier au client
                 File file = new File(WEB_ROOT, METHOD_NOT_SUPPORTED);
@@ -100,6 +106,7 @@ public class JavaHTTPServer implements Runnable{
                 out.println(); // blank line between headers and content, very important !
                 out.flush(); // flush character output stream buffer
                 // file
+
                 dataOut.write(fileData, 0, fileLength);
                 dataOut.flush();
 
@@ -198,7 +205,6 @@ public class JavaHTTPServer implements Runnable{
         out.println("Content-length: " + fileLength);
         out.println(); // blank line between headers and content, very important !
         out.flush(); // flush character output stream buffer
-
         dataOut.write(fileData, 0, fileLength);
         dataOut.flush();
 
