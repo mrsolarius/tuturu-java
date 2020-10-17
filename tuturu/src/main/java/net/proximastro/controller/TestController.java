@@ -11,6 +11,6 @@ public class TestController extends RouteController {
 
     @Override
     protected String index() {
-        return "<h1>Bonjours</h1>";
+        return "<h1>MDR</h1>";
     }
 }
