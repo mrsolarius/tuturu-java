@@ -107,6 +107,19 @@ public class JavaHTTPServer implements Runnable{
                 String routeURI;
                 if (!(routeURI = ctrlm.getRegisterRoutesURI(URI)).equals("")){
                     RouteController RC = ctrlm.getRouteController(routeURI);
+                    String payload = RC.render(URI,routeURI);
+
+                    out.println(headerBuilder(200, "OK Je te jure sa passe xD", null, payload.length()));
+                    out.println(); // Line vide entre le head et le contenu TR2S IMPORTANT
+                    out.flush();
+
+                    dataOut.write(payload.getBytes(), 0, payload.length());
+                    dataOut.flush();
+
+                    if (verbose) {
+                        System.out.println("La route " + routeURI + " à bien était rendu");
+                    }
+
                 } else {
 
                     File file = new File(WEB_ROOT, URI);
@@ -206,44 +219,6 @@ public class JavaHTTPServer implements Runnable{
                 "Content-type: " + contentMimeType+"\\r\\n"+
                 "Content-length: " + fileLength+"\\r\\n"+
                 "\\n";
-    }
-
-    public static HashMap<String,String> buildGETMap(String URI){
-        //inisialisation de la hash map des paramettres
-        HashMap<String, String> getParams = new HashMap<>();
-        if (URI.split("\\?+").length==2) {
-            //Sépartion de tous les parametre de la requette get
-            String[] params = URI.split("\\?+")[1].split("&");
-            for (int i = 0; i < params.length; i++) {
-                //definition du tupe de valeur cles et valeur
-                String[] keyValue = params[i].split("=");
-                //verification qu'il y a bien une valeur apres le =
-                if (keyValue.length == 2) {
-                    //ajouts des paramettre à la hashmap
-                    getParams.put(keyValue[0], keyValue[1]);
-                }
-            }
-        }
-        return getParams;
-    }
-
-    public static HashMap<String,String> buildURIMap(String URI, String routeURI){
-        String[] URIArray = URI.split("/");
-        String[] routeURIArray = routeURI.split("/");
-        HashMap<String,String> URIMap = new HashMap<>();
-        if (URIArray.length == routeURIArray.length){
-            for (int i = 0; i <URIArray.length ; i++) {
-                if (routeURIArray[i].startsWith("{") && routeURIArray[i].endsWith("}")){
-                    URIMap.put(
-                            routeURIArray[i]
-                                    .replace("{","")
-                                    .replace("}",""),
-                            URIArray[i]
-                    );
-                }
-            }
-        }
-        return  URIMap;
     }
 
 }
