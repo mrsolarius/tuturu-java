@@ -104,7 +104,7 @@ public class ControllerManager {
         return routeURI;
     }
 
-    public RouteController getControler(String routeURI){
+    public RouteController getRouteController(String routeURI){
         return this.routeControllers.get(routeURI);
     }
 }

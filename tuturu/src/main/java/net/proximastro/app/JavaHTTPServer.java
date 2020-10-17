@@ -106,7 +106,7 @@ public class JavaHTTPServer implements Runnable{
                 // methode head ou get
                 String routeURI;
                 if (!(routeURI = ctrlm.getRegisterRoutesURI(URI)).equals("")){
-                    RouteController RC = ctrlm.getControler(routeURI);
+                    RouteController RC = ctrlm.getRouteController(routeURI);
                 } else {
 
                     File file = new File(WEB_ROOT, URI);
@@ -208,12 +208,12 @@ public class JavaHTTPServer implements Runnable{
                 "\\n";
     }
 
-    public static HashMap<String,String> getBuilder(String uri){
+    public static HashMap<String,String> buildGETMap(String URI){
         //inisialisation de la hash map des paramettres
         HashMap<String, String> getParams = new HashMap<>();
-        if (uri.split("\\?+").length==2) {
+        if (URI.split("\\?+").length==2) {
             //Sépartion de tous les parametre de la requette get
-            String[] params = uri.split("\\?+")[1].split("&");
+            String[] params = URI.split("\\?+")[1].split("&");
             for (int i = 0; i < params.length; i++) {
                 //definition du tupe de valeur cles et valeur
                 String[] keyValue = params[i].split("=");
@@ -225,6 +225,25 @@ public class JavaHTTPServer implements Runnable{
             }
         }
         return getParams;
+    }
+
+    public static HashMap<String,String> buildURIMap(String URI, String routeURI){
+        String[] URIArray = URI.split("/");
+        String[] routeURIArray = routeURI.split("/");
+        HashMap<String,String> URIMap = new HashMap<>();
+        if (URIArray.length == routeURIArray.length){
+            for (int i = 0; i <URIArray.length ; i++) {
+                if (routeURIArray[i].startsWith("{") && routeURIArray[i].endsWith("}")){
+                    URIMap.put(
+                            routeURIArray[i]
+                                    .replace("{","")
+                                    .replace("}",""),
+                            URIArray[i]
+                    );
+                }
+            }
+        }
+        return  URIMap;
     }
 
 }
