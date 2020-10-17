@@ -3,19 +3,19 @@ package net.proximastro.app;
 import java.util.HashMap;
 
 public class RouteController {
-    private HashMap<String,String> GETMap;
-    private HashMap<String,String> URIMap;
-    private String URI;
-    private String routeURI;
+    protected HashMap<String,String> GETMap;
+    protected HashMap<String,String> URIMap;
+    protected String URI;
+    protected String routeURI;
 
     public RouteController(){}
 
-    private String index(){
+    protected String index(){
         return "<!DOCTYPE html>\n" +
                 "<html lang=\"fr\">\n" +
                 "<head>\n" +
                 "    <meta charset=\"UTF-8\">\n" +
-                "    <title> Page par defaut</title>\n" +
+                "    <title>Page par defaut</title>\n" +
                 "</head>\n" +
                 "<body>" +
                 "   <h1>Données</h1>" +

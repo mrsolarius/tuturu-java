@@ -7,6 +7,10 @@ import java.util.HashMap;
 public class TestController extends RouteController {
 
     public TestController(){
+    }
 
+    @Override
+    protected String index() {
+        return "<h1>Bonjours</h1>";
     }
 }
