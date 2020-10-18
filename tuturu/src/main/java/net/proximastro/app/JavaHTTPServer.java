@@ -1,5 +1,6 @@
 package net.proximastro.app;
 
+import javax.sound.midi.Soundbank;
 import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
 import java.io.File;
@@ -63,11 +64,12 @@ public class JavaHTTPServer implements Runnable{
         // gestion des cas particulier des connexion client
         BufferedReader in = null; PrintWriter out = null; BufferedOutputStream dataOut = null;
         String URI = null;
-
+        System.out.println("nouvelle requette entrente");
         try {
 
-            // récupération de la requete avec un buffer reader
+            // récupération du header avec le buffer reader
             in = new BufferedReader(new InputStreamReader(connect.getInputStream()));
+
             // récupération du flux pour l'imprimer
             out = new PrintWriter(connect.getOutputStream());
             // récupération des données entrante pour les POST
@@ -76,6 +78,7 @@ public class JavaHTTPServer implements Runnable{
             // lecture de la premiere ligne de la connexion client
             String input = in.readLine();
             // récpration du token de connexion
+            System.out.println(input);
             StringTokenizer parse = new StringTokenizer(input);
             String method = parse.nextToken().toUpperCase(); // récupération de la methode du client
             // récupération du fichier de la requete
@@ -83,68 +86,91 @@ public class JavaHTTPServer implements Runnable{
             ControllerManager ctrlm = new ControllerManager();
 
             // Verification de la methode
-            if (!method.equals("GET")  &&  !method.equals("HEAD")) {
+            switch (method){
+                case "GET":
+                case "HEAD":
+                    String routeURI;
+                    if (!(routeURI = ctrlm.getRegisterRoutesURI(URI)).equals("")){
+                        RouteController RC = ctrlm.getRouteController(routeURI);
+                        String payload = RC.render(URI,routeURI);
 
-                if (verbose) {
-                    System.out.println("501 La methode : " + method + " n'est pas implementer.");
-                }
-
-                // renvoie du fichier au client
-                File file = new File(WEB_ROOT, METHOD_NOT_SUPPORTED);
-                int fileLength = (int) file.length();
-                String contentMimeType = "text/html";
-                //Lecture du fichier à envoyer au client
-                byte[] fileData = readFileData(file, fileLength);
-                out.println(headerBuilder(501,"C'est pas encore implementer",null,fileLength));
-                out.println();
-                out.flush();
-                //ecriture du contenu
-                dataOut.write(fileData, 0, fileLength);
-                dataOut.flush();
-
-            } else {
-                // methode head ou get
-                String routeURI;
-                if (!(routeURI = ctrlm.getRegisterRoutesURI(URI)).equals("")){
-                    RouteController RC = ctrlm.getRouteController(routeURI);
-                    String payload = RC.render(URI,routeURI);
-
-                    out.println(headerBuilder(200, "OK Je te jure sa passe xD", null, payload.length()));
-                    out.println(); // Line vide entre le head et le contenu TR2S IMPORTANT
-                    out.flush();
-
-                    dataOut.write(payload.getBytes(), 0, payload.length());
-                    dataOut.flush();
-
-                    if (verbose) {
-                        System.out.println("La route " + routeURI + " à bien était rendu");
-                    }
-
-                } else {
-
-                    File file = new File(WEB_ROOT, URI);
-                    int fileLength = (int) file.length();
-                    String content = getContentType(URI);
-
-                    if (method.equals("GET")) { // GET method donc on renvoie le contenu du fichier
-                        byte[] fileData = readFileData(file, fileLength);
-
-                        // Envoie du header HTTP
-                        out.println(headerBuilder(200, "OK LOL", content, fileLength));
+                        out.println(headerBuilder(200, "OK Je te jure sa passe xD", null, payload.length()));
                         out.println(); // Line vide entre le head et le contenu TR2S IMPORTANT
                         out.flush();
 
-                        dataOut.write(fileData, 0, fileLength);
+                        dataOut.write(payload.getBytes(), 0, payload.length());
                         dataOut.flush();
-                    }
 
+                        if (verbose) {
+                            System.out.println("La route " + routeURI + " à bien était rendu");
+                        }
+
+                    } else {
+
+                        File file = new File(WEB_ROOT, URI);
+                        int fileLength = (int) file.length();
+                        String content = getContentType(URI);
+
+                        if (method.equals("GET")) { // GET method donc on renvoie le contenu du fichier
+                            byte[] fileData = readFileData(file, fileLength);
+
+                            // Envoie du header HTTP
+                            out.println(headerBuilder(200, "OK LOL", content, fileLength));
+                            out.println(); // Line vide entre le head et le contenu TR2S IMPORTANT
+                            out.flush();
+
+                            dataOut.write(fileData, 0, fileLength);
+                            dataOut.flush();
+                        }
+
+                        if (verbose) {
+                            System.out.println("Le fichier " + URI + " du type " + content + " et envoyer");
+                        }
+                    }
+                    break;
+                case "POST":
+                    in.readLine();
+                    String line;
+                    StringBuilder body = new StringBuilder();
+                    while ((line=in.readLine())!=null){
+                        System.out.println(line);
+                        body.append(line).append("\\r\\n");
+                    }
+                    in.readLine();
+                    in.readLine();
+                    while ((line=in.readLine())!=null){
+                        System.out.println(line);
+                        body.append(line).append("\\r\\n");
+                    }
+                    System.out.println(body.toString());
                     if (verbose) {
-                        System.out.println("Le fichier " + URI + " du type " + content + " et envoyer");
+                        System.out.println("Reception d'une methode POST");
                     }
-                }
 
+                    out.println(headerBuilder(200,"OK",null,1000));
+                    out.println();
+                    out.flush();
+
+                    dataOut.write("".getBytes(), 0, 0);
+                    dataOut.flush();
+                    break;
+                default:
+                    if (verbose) {
+                        System.out.println("501 La methode : " + method + " n'est pas implementer.");
+                    }
+                    // renvoie du fichier au client
+                    File file = new File(WEB_ROOT, METHOD_NOT_SUPPORTED);
+                    int fileLength = (int) file.length();
+                    String contentMimeType = "text/html";
+                    //Lecture du fichier à envoyer au client
+                    byte[] fileData = readFileData(file, fileLength);
+                    out.println(headerBuilder(501,"C'est pas encore implementer",null,fileLength));
+                    out.println();
+                    out.flush();
+                    //ecriture du contenu
+                    dataOut.write(fileData, 0, fileLength);
+                    dataOut.flush();
             }
-
         } catch (FileNotFoundException fnfe) {
             try {
                 fileNotFound(out, dataOut, URI);
@@ -215,7 +241,8 @@ public class JavaHTTPServer implements Runnable{
         contentMimeType = contentMimeType == null ? "text/plain" : contentMimeType;
         return "HTTP/1.1 "+statusCode+" "+statusMessage+"\\r\\n"+
                 "Server: Java Tuturu HTTP Server : 1.0\\r\\n"+
-                "Date: " + new Date()+"\\r\\n"+
+                "Date: " + new Date()+"\\r\\n" +
+                "Connection: close\\r\\n"+
                 "Content-type: " + contentMimeType+"\\r\\n"+
                 "Content-length: " + fileLength+"\\r\\n"+
                 "\\n";
