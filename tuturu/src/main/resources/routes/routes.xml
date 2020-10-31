@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<routes>
+    <route path="/test/lol" controler="TestController" methode="GET"/>
+    <route path="/test/{bjr}/{enjoy}" controler="TestController2" methode="GET"/>
+    <route path="/" controler="TestController2" methode="GET"/>
+</routes>
