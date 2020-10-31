@@ -1,6 +1,5 @@
 package net.proximastro.app;
 
-import net.proximastro.app.RouteController;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
@@ -14,7 +13,10 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 
 public class ControllerManager {
     static final String ROUTES_EMPLACEMENT = "./tuturu/src/main/resources/routes/routes.xml";
@@ -39,11 +41,20 @@ public class ControllerManager {
                 Node node = nodeList.item(itr);
                 String controllerName = node.getAttributes().getNamedItem("controler").getNodeValue();
                 String path = node.getAttributes().getNamedItem("path").getNodeValue();
+                ArrayList<String> methods = new ArrayList<>(
+                        Arrays.asList(
+                                node.getAttributes()
+                                    .getNamedItem("method")
+                                    .getNodeValue()
+                                    .split("\\|")
+                        )
+                );
                 try {
                     Class<?> clazz = Class.forName("net.proximastro.controller." + controllerName);
                     Constructor<?> ctor = clazz.getConstructor();
                     Object object = ctor.newInstance();
                     RouteController rc = (RouteController) object;
+                    rc.setHandleMethods(methods);
                     this.routeControllers.put(path, rc);
                 }catch (ClassNotFoundException e){
                     System.out.println("Le controleur : '"+controllerName+"' idiquer dans la route :'"+path+"' n'as pas était trouver");
@@ -72,29 +83,32 @@ public class ControllerManager {
         }
     }
 
-    public String getRegisterRoutesURI(String URI){
+    public String getRegisterRoutesURI(String URI,String method){
         String routeURI="";
         //récupération de l'uri nettoyer d'eventuelle methode GET et transphormation en tableau
         String[] uriArr = URI.split("\\?+")[0].split("/");
 
         //parcours des cles de la hash map
         for (String key : this.routeControllers.keySet()) {
-            //récupération du tableau de la route
-            String[] routeArr = key.split("/");
+            //Si le controler peut handle la methode utiliser
+            if (this.routeControllers.get(key).getHandleMethods().contains(method)){
+                //récupération du tableau de la route
+                String[] routeArr = key.split("/");
 
-            //si les deux tableau ne font pas la même taille alors ce n'est pas
-            if (uriArr.length == routeArr.length){
-                //récupération de la cles de la route
-                routeURI = key;
-                for (int i = 0; i <uriArr.length ; i++) {
-                    //Si l'élement n'est pas une variable de route
-                    if (!(routeArr[i].startsWith("{") && routeArr[i].endsWith("}"))){
-                        //si les deux element ne sont pas exactement egal
-                        if (!uriArr[i].equals(routeArr[i])){
-                            //on reinisialise la valeur de la cles
-                            routeURI = "";
-                            break;
-                        };
+                //si les deux tableau ne font pas la même taille alors ce n'est pas
+                if (uriArr.length == routeArr.length){
+                    //récupération de la cles de la route
+                    routeURI = key;
+                    for (int i = 0; i <uriArr.length ; i++) {
+                        //Si l'élement n'est pas une variable de route
+                        if (!(routeArr[i].startsWith("{") && routeArr[i].endsWith("}"))){
+                            //si les deux element ne sont pas exactement egal
+                            if (!uriArr[i].equals(routeArr[i])){
+                                //on reinisialise la valeur de la cles
+                                routeURI = "";
+                                break;
+                            };
+                        }
                     }
                 }
             }

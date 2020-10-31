@@ -26,6 +26,8 @@ public class JavaHTTPServer implements Runnable{
     // port to listen connection
     static final int PORT = 8080;
 
+    static boolean awaitPayload = false;
+
     // verbose mode
     static final boolean verbose = true;
 
@@ -77,28 +79,28 @@ public class JavaHTTPServer implements Runnable{
 
             // lecture de la premiere ligne de la connexion client
             String input = in.readLine();
+            if (input==null)return;
             // récpration du token de connexion
-            System.out.println(input);
             StringTokenizer parse = new StringTokenizer(input);
             String method = parse.nextToken().toUpperCase(); // récupération de la methode du client
             // récupération du fichier de la requete
             URI = parse.nextToken().toLowerCase();
             ControllerManager ctrlm = new ControllerManager();
-
+            System.out.println("methode : "+method);
             // Verification de la methode
+            String routeURI;
             switch (method){
                 case "GET":
                 case "HEAD":
-                    String routeURI;
-                    if (!(routeURI = ctrlm.getRegisterRoutesURI(URI)).equals("")){
+                    if (!(routeURI = ctrlm.getRegisterRoutesURI(URI,method)).equals("")){
                         RouteController RC = ctrlm.getRouteController(routeURI);
-                        String payload = RC.render(URI,routeURI);
+                        String render = RC.render(URI,routeURI,"");
 
-                        out.println(headerBuilder(200, "OK Je te jure sa passe xD", null, payload.length()));
+                        out.println(headerBuilder(200, "OK Je te jure sa passe xD", null, render.length()));
                         out.println(); // Line vide entre le head et le contenu TR2S IMPORTANT
                         out.flush();
 
-                        dataOut.write(payload.getBytes(), 0, payload.length());
+                        dataOut.write(render.getBytes(), 0, render.length());
                         dataOut.flush();
 
                         if (verbose) {
@@ -129,30 +131,34 @@ public class JavaHTTPServer implements Runnable{
                     }
                     break;
                 case "POST":
-                    in.readLine();
-                    String line;
-                    StringBuilder body = new StringBuilder();
-                    while ((line=in.readLine())!=null){
-                        System.out.println(line);
-                        body.append(line).append("\\r\\n");
-                    }
-                    in.readLine();
-                    in.readLine();
-                    while ((line=in.readLine())!=null){
-                        System.out.println(line);
-                        body.append(line).append("\\r\\n");
-                    }
-                    System.out.println(body.toString());
-                    if (verbose) {
-                        System.out.println("Reception d'une methode POST");
-                    }
+                    if (!(routeURI = ctrlm.getRegisterRoutesURI(URI,method)).equals("")){
+                        StringBuilder payload = new StringBuilder();
+                        while(in.ready()){
+                            payload.append((char) in.read());
+                        }
+                        RouteController RC = ctrlm.getRouteController(routeURI);
+                        String render = RC.render(
+                                URI,
+                                routeURI,
+                                payload.toString()
+                                        .split("\r\n")[
+                                            payload.toString()
+                                            .split("\r\n")
+                                            .length-1]);
 
-                    out.println(headerBuilder(200,"OK",null,1000));
-                    out.println();
-                    out.flush();
+                        out.println(headerBuilder(200, "OK Je te jure sa passe xD", null, render.length()));
+                        out.println(); // Line vide entre le head et le contenu TR2S IMPORTANT
+                        out.flush();
 
-                    dataOut.write("".getBytes(), 0, 0);
-                    dataOut.flush();
+                        dataOut.write(render.getBytes(), 0, render.length());
+                        dataOut.flush();
+
+                        if (verbose) {
+                            System.out.println("La route " + routeURI + " à bien était rendu");
+                        }
+                    }else{
+                        fileNotFound(out, dataOut, URI);
+                    }
                     break;
                 default:
                     if (verbose) {
