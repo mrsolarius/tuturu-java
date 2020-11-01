@@ -10,18 +10,17 @@ import org.xml.sax.SAXException;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerConfigurationException;
-import javax.xml.transform.TransformerException;
-import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.*;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 
 public class DOMStudent {
-    private static String studentsFileDir = "tuturu/src/main/resources/data/student_data.xml";
+    private static String studentsFileDir = "src/main/resources/data/student_data.xml";
+    private static List<Student> studentList;
 
     public static Document getDocument() throws IOException, SAXException, ParserConfigurationException {
         File studentsFile = new File(studentsFileDir);
@@ -30,36 +29,52 @@ public class DOMStudent {
         return db.parse(studentsFile);
     }
 
-    public static void addStudent(Student student) throws ParserConfigurationException, SAXException, IOException, TransformerException {
+    public boolean addOrUpdateStudent(Student student) throws ParserConfigurationException, SAXException, IOException, TransformerException {
         Document document = getDocument();
 
         Element element = document.getDocumentElement();
 
-        addChildElement(element, "student", "test");
 
+        if(student.getId()>0) {
+            document.getDocumentElement().normalize();
+            System.out.println("Root element:" + document.getDocumentElement().getNodeName());
+            NodeList nodeList = document.getElementsByTagName("student");
+            int i = 0;
+            boolean estModifie = false;
+            while(i < nodeList.getLength() && !estModifie){
+                Element elementEtudiant = (Element) nodeList.item(i);
+                if(elementEtudiant.getAttributeNode("id").getValue().equals(String.valueOf(student.getId()))){
+                    Node firstName = elementEtudiant.getElementsByTagName("firstName").item(0).getFirstChild();
+                    firstName.setNodeValue(student.getFirstName());
 
-        TransformerFactory transformerFactory = TransformerFactory.newInstance();
-        Transformer transformer = transformerFactory.newTransformer();
-        DOMSource source = new DOMSource(document);
-        StreamResult result = new StreamResult(new File(studentsFileDir));
-        transformer.transform(source, result);
+                    Node lastName = elementEtudiant.getElementsByTagName("lastName").item(0).getFirstChild();
+                    lastName.setNodeValue(student.getLastName());
 
-        /*
-        Element child = document.createElement("student");
-        child.setAttribute("id", "5");
-        String text = "test";
+                    Node group = elementEtudiant.getElementsByTagName("group").item(0).getFirstChild();
+                    group.setNodeValue(student.getGroup());
+                    estModifie = true;
+                }
 
-        element.appendChild(child);
+                i++;
+            }
 
-        /*
-        Element child = document.createElement(name);
-        element.appendChild(child);
-        if (textValue != null) {
-            String text = textValue.toString();
-            child.appendChild(document.createTextNode(text));
+            if(!estModifie){
+                return false;
+            }
+        }else{
+            Element elementStudent = document.createElement("Student");
+            elementStudent.setAttribute("id", String.valueOf(this.studentList.get(this.studentList.size()-1).getId()+1));
+            addChildElement(elementStudent, "firstName", student.getFirstName());
+            addChildElement(elementStudent, "lastName", student.getLastName());
+            addChildElement(elementStudent, "group", student.getGroup());
+
+            element.appendChild(elementStudent);
         }
-         */
+        saveXMLContent(document, studentsFileDir);
+        return true;
     }
+
+
 
     public static void addChildElement(Element element, String name, Object
             textValue) {
@@ -102,14 +117,26 @@ public class DOMStudent {
         return null;
     }
 
-    public static void main (String[] args) throws IOException, SAXException, ParserConfigurationException, TransformerException {
-        ArrayList<Student> listStudents = getListStudents();
+    private static void saveXMLContent(Document document, String xmlFile) {
+        try {
+            TransformerFactory transformerFactory = TransformerFactory.newInstance();
+            Transformer transformer = transformerFactory.newTransformer();
+            DOMSource domSource = new DOMSource(document);
+            StreamResult streamResult = new StreamResult(xmlFile);
+            transformer.transform(domSource, streamResult);
+        } catch (Exception ex) {
+            System.out.println(ex.getMessage());
+        }
+    }
 
-        for(Student s : listStudents){
+    public void start () throws IOException, SAXException, ParserConfigurationException, TransformerException {
+        this.studentList = getListStudents();
+
+        for(Student s : this.studentList){
             System.out.println(s.toString());
         }
 
-        addStudent(new Student(50, "nom", "prenom", "tuturu"));
+        addOrUpdateStudent(new Student(3, "JEANTET", "Joey", "tuturu"));
     }
 
 }

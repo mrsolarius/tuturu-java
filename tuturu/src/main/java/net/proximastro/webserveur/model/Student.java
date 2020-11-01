@@ -21,7 +21,7 @@ public class Student {
         this.id = id;
     }
 
-    public String getName() {
+    public String getFirstName() {
         return name;
     }
 
@@ -29,7 +29,7 @@ public class Student {
         this.name = name;
     }
 
-    public String getSurname() {
+    public String getLastName() {
         return surname;
     }
 
