@@ -36,44 +36,71 @@ public class DOMStudent {
 
 
         if(student.getId()>0) {
-            document.getDocumentElement().normalize();
-            System.out.println("Root element:" + document.getDocumentElement().getNodeName());
-            NodeList nodeList = document.getElementsByTagName("student");
-            int i = 0;
-            boolean estModifie = false;
-            while(i < nodeList.getLength() && !estModifie){
-                Element elementEtudiant = (Element) nodeList.item(i);
-                if(elementEtudiant.getAttributeNode("id").getValue().equals(String.valueOf(student.getId()))){
-                    Node firstName = elementEtudiant.getElementsByTagName("firstName").item(0).getFirstChild();
-                    firstName.setNodeValue(student.getFirstName());
-
-                    Node lastName = elementEtudiant.getElementsByTagName("lastName").item(0).getFirstChild();
-                    lastName.setNodeValue(student.getLastName());
-
-                    Node group = elementEtudiant.getElementsByTagName("group").item(0).getFirstChild();
-                    group.setNodeValue(student.getGroup());
-                    estModifie = true;
-                }
-
-                i++;
-            }
+            boolean estModifie = updateStudent(document, student);
 
             if(!estModifie){
                 return false;
             }
         }else{
-            Element elementStudent = document.createElement("Student");
-            elementStudent.setAttribute("id", String.valueOf(this.studentList.get(this.studentList.size()-1).getId()+1));
-            addChildElement(elementStudent, "firstName", student.getFirstName());
-            addChildElement(elementStudent, "lastName", student.getLastName());
-            addChildElement(elementStudent, "group", student.getGroup());
-
-            element.appendChild(elementStudent);
+            addStudent(document, element, student);
         }
         saveXMLContent(document, studentsFileDir);
         return true;
     }
 
+    public boolean deleteStudent(Student student) throws ParserConfigurationException, SAXException, IOException {
+        Document document = getDocument();
+        document.getDocumentElement().normalize();
+        System.out.println("Root element:" + document.getDocumentElement().getNodeName());
+        Node studentsNode = document.getElementsByTagName("students").item(0);
+        NodeList nodeList = document.getElementsByTagName("student");
+        int i = 0;
+        for(i=0; i<nodeList.getLength(); i++){
+            Node nodeEtudiant = nodeList.item(i);
+            Element elementEtudiant = (Element) nodeEtudiant;
+            if(elementEtudiant.getAttributeNode("id").getValue().equals(String.valueOf(student.getId()))){
+//                nodeList.item(i).removeChild(nodeEtudiant);
+                studentsNode.removeChild(nodeEtudiant);
+                saveXMLContent(document, studentsFileDir);
+                return true;
+            }
+            i++;
+        }
+        return false;
+    }
+
+    private void addStudent(Document document, Element element, Student student) {
+        Element elementStudent = document.createElement("Student");
+        elementStudent.setAttribute("id", String.valueOf(studentList.get(studentList.size()-1).getId()+1));
+        addChildElement(elementStudent, "firstName", student.getFirstName());
+        addChildElement(elementStudent, "lastName", student.getLastName());
+        addChildElement(elementStudent, "group", student.getGroup());
+
+        element.appendChild(elementStudent);
+    }
+
+    private boolean updateStudent(Document document, Student student) {
+        document.getDocumentElement().normalize();
+        System.out.println("Root element:" + document.getDocumentElement().getNodeName());
+        NodeList nodeList = document.getElementsByTagName("student");
+        int i = 0;
+        for(i=0; i<nodeList.getLength(); i++){
+            Element elementEtudiant = (Element) nodeList.item(i);
+            if(elementEtudiant.getAttributeNode("id").getValue().equals(String.valueOf(student.getId()))){
+                Node firstName = elementEtudiant.getElementsByTagName("firstName").item(0).getFirstChild();
+                firstName.setNodeValue(student.getFirstName());
+
+                Node lastName = elementEtudiant.getElementsByTagName("lastName").item(0).getFirstChild();
+                lastName.setNodeValue(student.getLastName());
+
+                Node group = elementEtudiant.getElementsByTagName("group").item(0).getFirstChild();
+                group.setNodeValue(student.getGroup());
+                return true;
+            }
+            i++;
+        }
+        return false;
+    }
 
 
     public static void addChildElement(Element element, String name, Object
@@ -136,7 +163,8 @@ public class DOMStudent {
             System.out.println(s.toString());
         }
 
-        addOrUpdateStudent(new Student(3, "JEANTET", "Joey", "tuturu"));
+        addOrUpdateStudent(new Student(3, "jeantet", "Joey", "tuturu"));
+        deleteStudent(new Student(5, "test", "test","test"));
     }
 
 }
