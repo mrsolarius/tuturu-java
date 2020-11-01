@@ -1,0 +1,9 @@
+<?xml version="1.0" standalone="no" ?>
+<!DOCTYPE doc [
+        <!ENTITY nav SYSTEM "../scaffolding/nav.xml">
+        ]>
+<doc>
+    <foo>
+        <bar>&nav;</bar>
+    </foo>
+</doc>
