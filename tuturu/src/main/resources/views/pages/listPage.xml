@@ -2,8 +2,15 @@
 <!DOCTYPE doc [
         <!ENTITY nav SYSTEM "../scaffolding/nav.xml">
         ]>
-<doc>
-    <foo>
-        <bar>&nav;</bar>
-    </foo>
-</doc>
+<h1>
+    <rutu:value-of select="tuturu"></rutu:value-of>
+    <rutu:for-eatch select="data">
+        <h1>
+            <rutu:value-of select="nom"></rutu:value-of>
+        </h1>
+        <p>
+            <rutu:value-of select="group"></rutu:value-of>
+        </p>
+    </rutu:for-eatch>
+</h1>
+<p></p>

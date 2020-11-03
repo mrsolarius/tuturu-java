@@ -4,21 +4,30 @@ import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 
-public class SAXBody extends DefaultHandler {
-    private String htmlCorps;
+import java.util.HashMap;
 
-    public SAXBody(){
+public class SAXBody extends DefaultHandler {
+    private String lang;
+    private HashMap<String,Object> parms;
+    private StringBuilder htmlCorps;
+    private HashMap<String,String> forEatchStr;
+
+    public SAXBody(String lang, HashMap<String,Object> parms){
         super();
+        htmlCorps = new StringBuilder();
+        forEatchStr = new HashMap<>();
+        this.parms = parms;
+        this.lang = lang;
     }
 
     public String getHtmlCorps() {
-        return htmlCorps;
+        return htmlCorps.toString();
     }
 
     @Override
     public void startDocument() throws SAXException {
         super.startDocument();
-        System.out.println("start document");
+        htmlCorps.append("<!DOCTYPE html><html lang=").append(this.lang).append(">");
     }
 
     @Override
@@ -30,12 +39,49 @@ public class SAXBody extends DefaultHandler {
     @Override
     public void startElement(String uri, String localName, String qName, Attributes attributes) throws SAXException {
         super.startElement(uri, localName, qName, attributes);
-        System.out.println("<" + qName + ">");
+
+        //Gestion des simple balse HTML
+        if (!qName.startsWith("rutu:")){
+            htmlCorps.append("<").append(qName);
+            for (int i = 0; i < attributes.getLength() ; i++) {
+                htmlCorps.append(" ").append(attributes.getQName(i)).append("=\"").append(attributes.getValue(i)).append("\"");
+            }
+            htmlCorps.append(">");
+        //Gestion des balise de templating
+        }else {
+            switch (qName.split("rutu:")[1]){
+                case "stylesheet":
+                    break;
+                case "script":
+                    break;
+                case "value-of":
+                    if (attributes.getLength()>0){
+                        if (attributes.getIndex("select")!=-1){
+                            if (this.parms.get(attributes.getValue("select"))!=null){
+                                htmlCorps.append(this.parms.get(attributes.getValue("select")));
+                            }
+                        }
+                    }
+                    break;
+                case "for-each":
+                    if (attributes.getLength()>0) {
+                        if (attributes.getIndex("select") != -1) {
+                        }
+                    }
+                    break;
+                case "if":
+                    break;
+                case "else":
+                    break;
+            }
+        }
+        System.out.println(htmlCorps.toString());
     }
 
     @Override
     public void endElement(String uri, String localName, String qName) throws SAXException {
         super.endElement(uri, localName, qName);
+        htmlCorps.append("</").append(qName).append(">");
         System.out.println("</" + qName + ">");
     }
 
