@@ -19,7 +19,7 @@ import java.util.StringTokenizer;
 // chaque client et récupérer dans un seul thread
 public class JavaHTTPServer implements Runnable{
 
-    static final File WEB_ROOT = new File("./tuturu/src/main/resources/public");
+    static final File WEB_ROOT = new File("./src/main/resources/public");
     static final String DEFAULT_FILE = "index.html";
     static final String FILE_NOT_FOUND = "404.html";
     static final String METHOD_NOT_SUPPORTED = "not_supported.html";

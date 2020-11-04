@@ -19,7 +19,7 @@ import java.util.HashMap;
 import java.util.List;
 
 public class ControllerManager {
-    static final String ROUTES_EMPLACEMENT = "./tuturu/src/main/resources/routes/routes.xml";
+    static final String ROUTES_EMPLACEMENT = "./src/main/resources/routes/routes.xml";
     private HashMap<String,RouteController> routeControllers;
 
     public ControllerManager(){

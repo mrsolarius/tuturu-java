@@ -23,10 +23,10 @@
         tutu
     </head>
     <body>
-        <rutu:if select="false">
-            <a href="/tuturu"></a>
-        <rutu:else/>
-            <div></div>
-        </rutu:if>
+        <rutu:for-each select="get">
+            <p>
+                <rutu:value-of select="lol"></rutu:value-of>
+            </p>
+        </rutu:for-each>
     </body>
 </html>
