@@ -2,7 +2,12 @@
 <!DOCTYPE doc [
         <!ENTITY nav SYSTEM "../scaffolding/nav.xml">
         ]>
-<h1>
+<!--<h1>
+    <rutu:if select="tuturu < tim">
+        <div>tuturu</div>
+    <rutu:else />
+        <div>echo</div>
+    </rutu:if>
     <rutu:value-of select="tuturu"></rutu:value-of>
     <rutu:for-eatch select="data">
         <h1>
@@ -12,5 +17,16 @@
             <rutu:value-of select="group"></rutu:value-of>
         </p>
     </rutu:for-eatch>
-</h1>
-<p></p>
+</h1>-->
+<html>
+    <head>
+        tutu
+    </head>
+    <body>
+        <rutu:if select="false">
+            <a href="/tuturu"></a>
+        <rutu:else/>
+            <div></div>
+        </rutu:if>
+    </body>
+</html>
