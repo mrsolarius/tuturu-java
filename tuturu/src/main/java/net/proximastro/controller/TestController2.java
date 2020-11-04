@@ -11,6 +11,7 @@ import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 import java.io.IOException;
+import java.util.HashMap;
 
 
 public class TestController2 extends RouteController {
@@ -20,18 +21,22 @@ public class TestController2 extends RouteController {
     @Override
     public String index() {
         try{
-            parse();
+            return parse();
         }catch (Exception e){
-            e.printStackTrace();
+            StringBuilder strToReturn = new StringBuilder();
+            for(StackTraceElement at : e.getStackTrace()){
+                strToReturn.append(at.toString());
+            }
+            return strToReturn.toString();
         }
-        return "OK";
     }
 
-    public void parse() throws SAXException, IOException, ParserConfigurationException {
+    public String parse() throws SAXException, IOException, ParserConfigurationException {
 
-        SAXBody handler = new SAXBody();
+        SAXBody handler = new SAXBody("xml", new HashMap<>());
         SAXParserFactory parserFactory = SAXParserFactory.newInstance();
         SAXParser parser = parserFactory.newSAXParser();
         parser.parse("./src/main/resources/views/pages/listPage.xml", handler);
+        return handler.getHtmlCorps();
     }
 }
