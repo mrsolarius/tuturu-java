@@ -1,5 +1,7 @@
-package net.proximastro.webserveur.sax;
+package net.proximastro.webserveur.sax.component;
 
+import net.proximastro.webserveur.sax.component.struct.XMLBuilder;
+import net.proximastro.webserveur.sax.component.struct.XMLDomBuilderInterface;
 import org.xml.sax.SAXException;
 
 import javax.xml.parsers.ParserConfigurationException;
@@ -7,7 +9,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class XMLForEach extends XMLBuilder implements XMLDomBuilderInterface{
+public class XMLForEach extends XMLBuilder implements XMLDomBuilderInterface {
     private ArrayList<HashMap<String,Object>> paramList;
 
     public XMLForEach(String uri, ArrayList<HashMap<String,Object>> paramList) {

@@ -1,4 +1,4 @@
-package net.proximastro.webserveur.sax;
+package net.proximastro.webserveur.sax.component.struct;
 
 import org.xml.sax.SAXException;
 

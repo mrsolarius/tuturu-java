@@ -34,6 +34,10 @@ public class TestController2 extends RouteController {
         ArrayList<HashMap<String,String>> list = new ArrayList<>();
         list.add(this.GETMap);
         list.add(this.GETMap);
+        list.add(this.GETMap);
+        list.add(this.GETMap);
+        list.add(this.GETMap);
+        list.add(this.GETMap);
         ht.put("get",list);
         SAXBody handler = new SAXBody(ht);
         SAXParserFactory parserFactory = SAXParserFactory.newInstance();

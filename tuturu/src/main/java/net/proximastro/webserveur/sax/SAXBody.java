@@ -1,5 +1,7 @@
 package net.proximastro.webserveur.sax;
 
+import net.proximastro.webserveur.sax.component.XMLForEach;
+import net.proximastro.webserveur.sax.component.XMLif;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
@@ -58,9 +60,7 @@ public class SAXBody extends DefaultHandler {
             xmlIf.appendXML(tempHtmlCorp.toString());
         }
         //Gestion des simple balse HTML
-        if (!qName.startsWith("rutu:")) {
-            htmlCorps.append(tempHtmlCorp.toString());
-        } else {
+        if (qName.startsWith("rutu:")){
             switch (qName.split("rutu:")[1]) {
                 case "stylesheet":
                     break;
@@ -97,9 +97,10 @@ public class SAXBody extends DefaultHandler {
                     }
                     break;
             }
-        }
+        }else if(xmlIf == null && xmlForEach == null)
+            htmlCorps.append(tempHtmlCorp.toString());
 
-    }
+}
 
     @Override
     public void endElement(String uri, String localName, String qName) throws SAXException {
@@ -139,9 +140,9 @@ public class SAXBody extends DefaultHandler {
                     }
                     break;
             }
-        } else {
-            htmlCorps.append(tempHtmlCorp);
-        }
+        } else if (xmlIf == null && xmlForEach == null)
+            htmlCorps.append(tempHtmlCorp.toString());
+
         if (xmlForEach != null) {
             xmlForEach.appendXML(tempHtmlCorp.toString());
         }

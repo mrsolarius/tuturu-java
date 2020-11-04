@@ -1,5 +1,6 @@
-package net.proximastro.webserveur.sax;
+package net.proximastro.webserveur.sax.component.struct;
 
+import net.proximastro.webserveur.sax.SAXBody;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 

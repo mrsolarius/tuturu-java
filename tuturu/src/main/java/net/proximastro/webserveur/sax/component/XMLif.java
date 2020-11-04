@@ -1,5 +1,8 @@
-package net.proximastro.webserveur.sax;
+package net.proximastro.webserveur.sax.component;
 
+import net.proximastro.webserveur.sax.component.struct.ParseCondition;
+import net.proximastro.webserveur.sax.component.struct.XMLBuilder;
+import net.proximastro.webserveur.sax.component.struct.XMLDomBuilderInterface;
 import org.xml.sax.SAXException;
 
 import javax.xml.parsers.ParserConfigurationException;
@@ -20,11 +23,10 @@ public class XMLif extends XMLBuilder implements XMLDomBuilderInterface {
     public String handle() throws ParserConfigurationException, SAXException, IOException {
         System.out.println(tempXMLBuilder.toString());
         String[] arr = tempXMLBuilder.toString().split("<rutu:else></rutu:else>");
-        boolean var = true;
-        if (var == true){
-            tempXMLBuilder = new StringBuilder(arr[0]);
+        if (ParseCondition.checkCondition(this.condition,this.hashMap)){
+            tempXMLBuilder = new StringBuilder(arr[0]).append("</rutu:doNothing>");
         }else {
-            tempXMLBuilder = new StringBuilder(arr[1]);
+            tempXMLBuilder = new StringBuilder("<rutu:doNothing>").append(arr[1]);
         }
         return this.buildHtml(this.hashMap);
     }
