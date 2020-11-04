@@ -20,12 +20,16 @@
 </h1>-->
 <html>
     <head>
-        tutu
     </head>
     <body>
         <rutu:for-each select="get">
+            <rutu:if condition="true">
+                <a href="/tuturu"></a>
+                <rutu:else/>
+                <h1></h1>
+            </rutu:if>
             <p>
-                <rutu:value-of select="lol"></rutu:value-of>
+                <rutu:value-of select="lol"/>
             </p>
         </rutu:for-each>
     </body>

@@ -7,7 +7,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class XMLForEach extends TempXMLDomBuilder implements XMLDomBuilderInterface{
+public class XMLForEach extends XMLBuilder implements XMLDomBuilderInterface{
     private ArrayList<HashMap<String,Object>> paramList;
 
     public XMLForEach(String uri, ArrayList<HashMap<String,Object>> paramList) {

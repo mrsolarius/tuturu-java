@@ -11,13 +11,14 @@ import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class TempXMLDomBuilder {
+public class XMLBuilder {
     private String uri;
-    private StringBuilder tempXMLBuilder;
+    protected StringBuilder tempXMLBuilder;
+    private HashMap<String,Object> param;
 
-    public TempXMLDomBuilder(String uri) {
+    public XMLBuilder(String uri) {
         this.uri = uri;
-        this.tempXMLBuilder = new StringBuilder();
+        this.tempXMLBuilder = new StringBuilder("<rutu:doNothing>");
     }
 
     public String getUri() {
@@ -29,12 +30,10 @@ public class TempXMLDomBuilder {
     }
 
     protected String buildHtml(HashMap<String,Object> param) throws ParserConfigurationException, IOException, SAXException {
+        if (!tempXMLBuilder.toString().endsWith("</rutu:doNothing>"))tempXMLBuilder.append("</rutu:doNothing>");
         SAXBody handler = new SAXBody(param);
         SAXParserFactory parserFactory = SAXParserFactory.newInstance();
         SAXParser parser = parserFactory.newSAXParser();
-        System.out.println("=======================");
-        System.out.println(tempXMLBuilder.toString());
-        System.out.println("=======================");
         InputSource is = new InputSource(new StringReader(tempXMLBuilder.toString()));
         parser.parse(is, handler);
         return handler.getHtmlCorps();

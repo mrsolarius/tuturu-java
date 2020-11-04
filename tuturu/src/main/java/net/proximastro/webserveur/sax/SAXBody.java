@@ -14,14 +14,12 @@ public class SAXBody extends DefaultHandler {
     private StringBuilder htmlCorps;
 
     private String path;
-
-    private IfClass ifContainer;
+    private XMLif xmlIf;
     private XMLForEach xmlForEach;
 
     public SAXBody(HashMap<String, Object> parms) {
         super();
         htmlCorps = new StringBuilder();
-        ifContainer = new IfClass();
         this.parms = parms;
         path = "";
     }
@@ -50,62 +48,57 @@ public class SAXBody extends DefaultHandler {
             tempHtmlCorp.append(" ").append(attributes.getQName(i)).append("=\"").append(attributes.getValue(i)).append("\"");
         }
         tempHtmlCorp.append(">");
+        System.out.println(htmlCorps.toString());
 
         path += "/" + qName;
-        System.out.println(path);
-        if (xmlForEach!=null){
+        if (xmlForEach != null) {
             xmlForEach.appendXML(tempHtmlCorp.toString());
         }
-        if (ifContainer.getValueOfLastHashMap()) {
-            //Gestion des simple balse HTML
-            if (!qName.startsWith("rutu:")) {
-                htmlCorps.append(tempHtmlCorp.toString());
-            } else {
-                switch (qName.split("rutu:")[1]) {
-                    case "stylesheet":
-                        break;
-                    case "script":
-                        break;
-                    case "value-of":
-                        if (xmlForEach==null){
-                            if (attributes.getLength() > 0) {
-                                if (attributes.getIndex("select") != -1) {
-                                    if (!String.valueOf(this.parms.get(attributes.getValue("select"))).isEmpty()) {
-                                        htmlCorps.append(this.parms.get(attributes.getValue("select")));
-                                    }
-                                }
-                            }
-                        }
-                        break;
-                    case "for-each":
-                        if (attributes.getLength() > 0) {
-                            if (attributes.getIndex("select") != -1) {
-                                if (xmlForEach == null) {
-                                    System.out.println(attributes.getValue("select"));
-                                    ArrayList<HashMap<String, Object>> hashMap = (ArrayList<HashMap<String, Object>>) parms.get(String.valueOf(attributes.getValue("select")));
-                                    xmlForEach = new XMLForEach(path, hashMap);
-                                }
-                            }
-                        }
-                        break;
-                    case "if":
-                        if (attributes.getLength() > 0) {
-                            if (attributes.getIndex("select") != -1) {
-                                if (attributes.getValue("select").equals("true")) {
-                                    ifContainer.addIfOnHashMap(path, true);
-                                } else if (attributes.getValue("select").equals("false")) {
-                                    ifContainer.addIfOnHashMap(path, false);
-                                }
-                            }
-                        }
-                        break;
-                    case "else":
-                        ifContainer.inverseValueOfLastHashMap();
-                        break;
-                }
-            }
-            System.out.println(htmlCorps.toString());
+        if (xmlIf != null){
+            xmlIf.appendXML(tempHtmlCorp.toString());
         }
+        //Gestion des simple balse HTML
+        if (!qName.startsWith("rutu:")) {
+            htmlCorps.append(tempHtmlCorp.toString());
+        } else {
+            switch (qName.split("rutu:")[1]) {
+                case "stylesheet":
+                    break;
+                case "script":
+                    break;
+                case "value-of":
+                    if (xmlForEach == null && xmlIf ==null) {
+                        if (attributes.getLength() > 0) {
+                            if (attributes.getIndex("select") != -1) {
+                                if (!String.valueOf(this.parms.get(attributes.getValue("select"))).isEmpty()) {
+                                    htmlCorps.append(this.parms.get(attributes.getValue("select")));
+                                }
+                            }
+                        }
+                    }
+                    break;
+                case "for-each":
+                    if (attributes.getLength() > 0) {
+                        if (attributes.getIndex("select") != -1) {
+                            if (xmlForEach == null) {
+                                ArrayList<HashMap<String, Object>> hashMap = (ArrayList<HashMap<String, Object>>) parms.get(String.valueOf(attributes.getValue("select")));
+                                xmlForEach = new XMLForEach(path, hashMap);
+                            }
+                        }
+                    }
+                    break;
+                case "if":
+                    if (attributes.getLength() > 0) {
+                        if (attributes.getIndex("condition") != -1) {
+                            if (xmlIf == null) {
+                                xmlIf = new XMLif(path, attributes.getValue("condition"),parms);
+                            }
+                        }
+                    }
+                    break;
+            }
+        }
+
     }
 
     @Override
@@ -115,63 +108,48 @@ public class SAXBody extends DefaultHandler {
         StringBuilder tempHtmlCorp = new StringBuilder("</").append(qName).append(">");
 
 
-        if (ifContainer.getValueOfLastHashMap()) {
-            if (qName.startsWith("rutu:")) {
-                switch (qName.split("rutu:")[1]) {
-                    case "if":
-                        ifContainer.removeLastHashMap();
-                        break;
-                    case "for-each":
-                        if (xmlForEach != null) {
-                            if (xmlForEach.getUri().equals(path)) {
-                                try {
-                                    htmlCorps.append(xmlForEach.handle());
-                                } catch (ParserConfigurationException | IOException e) {
-                                    e.printStackTrace();
-                                }
-                            }else {
-                                xmlForEach.appendXML(tempHtmlCorp.toString());
+        if (qName.startsWith("rutu:")) {
+            switch (qName.split("rutu:")[1]) {
+                case "if":
+                    if (xmlIf != null) {
+                        if (xmlIf.getUri().equals(path)) {
+                            try {
+                                htmlCorps.append(xmlIf.handle());
+                                xmlIf = null;
+                            } catch (ParserConfigurationException | IOException e) {
+                                e.printStackTrace();
                             }
+                        } else {
+                            xmlIf.appendXML(tempHtmlCorp.toString());
                         }
-                        xmlForEach = null;
-                        break;
-                }
-            } else {
-
-                htmlCorps.append("</").append(qName).append(">");
-                System.out.println("</" + qName + ">");
+                    }
+                    break;
+                case "for-each":
+                    if (xmlForEach != null) {
+                        if (xmlForEach.getUri().equals(path)) {
+                            try {
+                                htmlCorps.append(xmlForEach.handle());
+                                xmlForEach = null;
+                            } catch (ParserConfigurationException | IOException e) {
+                                e.printStackTrace();
+                            }
+                        } else {
+                            xmlForEach.appendXML(tempHtmlCorp.toString());
+                        }
+                    }
+                    break;
             }
         } else {
-            if (qName.startsWith("rutu:")) {
-                switch (qName.split("rutu:")[1]) {
-                    case "else":
-                        ifContainer.inverseValueOfLastHashMap();
-                        break;
-                    case "for-each":
-                        if (xmlForEach != null) {
-                            if (xmlForEach.getUri().equals(path)) {
-                                try {
-                                    htmlCorps.append(xmlForEach.handle());
-                                } catch (ParserConfigurationException | IOException e) {
-                                    e.printStackTrace();
-                                }
-                            }else {
-                                xmlForEach.appendXML(tempHtmlCorp.toString());
-                            }
-                        }
-                        xmlForEach = null;
-                        break;
-
-                }
-            }
+            htmlCorps.append(tempHtmlCorp);
         }
-
-        if (xmlForEach!=null){
+        if (xmlForEach != null) {
             xmlForEach.appendXML(tempHtmlCorp.toString());
+        }
+        if (xmlIf != null){
+            xmlIf.appendXML(tempHtmlCorp.toString());
         }
 
         path = path.substring(0, path.length() - (qName.length() + 1));
-        System.out.println(path);
     }
 
     @Override
