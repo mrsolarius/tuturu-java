@@ -23,7 +23,7 @@
     </head>
     <body>
         <rutu:for-each select="get">
-            <test></test>
+            <h1>mdrr</h1>
             <rutu:if condition="${mdr}==1">
                 <a href="/tuturu"></a>
                 <rutu:else/>
