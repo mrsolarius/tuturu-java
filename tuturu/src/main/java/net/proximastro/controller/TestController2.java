@@ -36,7 +36,7 @@ public class TestController2 extends RouteController {
         SAXBody handler = new SAXBody(ht);
         SAXParserFactory parserFactory = SAXParserFactory.newInstance();
         SAXParser parser = parserFactory.newSAXParser();
-        parser.parse("./src/main/resources/views/pages/viewStudent.xml", handler);
+        parser.parse("./src/main/resources/views/pages/addStudent.xml", handler);
         return handler.getHtmlCorps();
     }
 }

@@ -17,11 +17,47 @@
                 <div class="content">
                     <div class="container">
                         <div class="row">
-                            <rutu:for-eatch select="get">
-                                <div class="col-lg-5 col-md-6 offset-lg-0 offset-md-3">
-                                    &card;
+                            <div class="col-lg-5 col-md-6 offset-lg-0 offset-md-3">
+                                <div id="square7" class="square square-7"></div>
+                                <div id="square8" class="square square-8"></div>
+                                <div class="card card-register">
+                                    <div class="card-header">
+                                        <img class="card-img" style="margin-left: -65px;margin-top: -185px;border-radius: 20%;width: 390px;" src="../assets/img/square1.png" alt="Card image"/>
+                                        <h4 class="card-title">Etudiant</h4>
+                                    </div>
+                                    <div class="card-body">
+                                        <form class="form">
+                                            <div class="input-group">
+                                                <div class="input-group-prepend">
+                                                    <div class="input-group-text">
+                                                        <i class="tim-icons icon-single-02"></i>
+                                                    </div>
+                                                </div>
+                                                <input type="text" class="form-control" placeholder="Nom"/>
+                                            </div>
+                                            <div class="input-group">
+                                                <div class="input-group-prepend">
+                                                    <div class="input-group-text">
+                                                        <i class="tim-icons icon-badge"></i>
+                                                    </div>
+                                                </div>
+                                                <input type="text" class="form-control" placeholder="Prenom"/>
+                                            </div>
+                                            <div class="input-group">
+                                                <div class="input-group-prepend">
+                                                    <div class="input-group-text">
+                                                        <i class="tim-icons icon-molecule-40"></i>
+                                                    </div>
+                                                </div>
+                                                <input type="text" class="form-control" placeholder="Group"/>
+                                            </div>
+                                        </form>
+                                    </div>
+                                    <div class="card-footer">
+                                        <a href="javascript:void(0)" class="btn btn-info btn-round btn-lg">Ajouter</a>
+                                    </div>
                                 </div>
-                            </rutu:for-eatch>
+                            </div>
                             <div class="register-bg"></div>
                             <div id="square1" class="square square-1" style="position: fixed"></div>
                             <div id="square2" class="square square-2" style="position: fixed"></div>
