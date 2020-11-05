@@ -1,0 +1,42 @@
+<rutu:doNothing>
+    <footer class="footer">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4">
+                    <ul class="nav">
+                        <li class="nav-item">
+                            <a href="../index.html" class="nav-link">
+                                Acceuil
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="../examples/add-student.html" class="nav-link">
+                                Licence
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="col-md-4">
+                    <ul class="nav">
+                        <li class="nav-item">
+                            <a href="https://creative-tim.com/contact-us" class="nav-link">
+                                Etudiant
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="https://creative-tim.com/about-us" class="nav-link">
+                                Ajouter
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="col-md-4">
+                    <h1 class="title">TUTURU•
+                        <span class="title h4">Java Creative Project !</span>
+                    </h1>
+                    <p>Parce que même en java on peut faire du web. Et que le web nous permet de changer le monde.</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+</rutu:doNothing>

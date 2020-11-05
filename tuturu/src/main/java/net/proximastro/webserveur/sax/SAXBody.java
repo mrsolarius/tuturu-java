@@ -71,6 +71,7 @@ public class SAXBody extends DefaultHandler {
                         if (attributes.getLength() > 0) {
                             if (attributes.getIndex("select") != -1) {
                                 if (!String.valueOf(this.parms.get(attributes.getValue("select"))).isEmpty()) {
+                                    System.out.println(attributes.getValue("select"));
                                     htmlCorps.append(this.parms.get(attributes.getValue("select")));
                                 }
                             }
@@ -156,6 +157,14 @@ public class SAXBody extends DefaultHandler {
     @Override
     public void characters(char[] ch, int start, int length) throws SAXException {
         super.characters(ch, start, length);
-        htmlCorps.append(new String(ch,start,length));
+        if(xmlForEach != null){
+            xmlForEach.appendXML(new String(ch,start,length));
+        }
+        if(xmlIf != null){
+            xmlIf.appendXML(new String(ch,start,length));
+        }
+        if(xmlIf == null && xmlForEach == null) {
+            htmlCorps.append(new String(ch, start, length));
+        }
     }
 }

@@ -1,0 +1,45 @@
+<?xml version="1.0" standalone="no" ?>
+<!DOCTYPE doc [
+        <!ENTITY nav SYSTEM "../scaffolding/nav.xml">
+        <!ENTITY head SYSTEM "../scaffolding/head.xml">
+        <!ENTITY card SYSTEM "../scaffolding/card.xml">
+        <!ENTITY footer SYSTEM "../scaffolding/footer.xml">
+        <!ENTITY script SYSTEM "../scaffolding/script.xml">
+        ]>
+<html>
+    <head>
+        &head;
+    </head>
+    <body class="register-page">
+        &nav;
+        <div class="wrapper">
+            <div class="page-header" style="max-height:none;">
+                <div class="page-header-image"></div>
+                <div class="content">
+                    <div class="container">
+                        <div class="row">
+                            <rutu:for-each select="students">
+                                <div class="col-lg-5 col-md-6 offset-lg-0 offset-md-3">
+                                    &card;
+                                </div>
+                            </rutu:for-each>
+                            <div class="register-bg"></div>
+                            <div id="square1" class="square square-1" style="position: fixed"></div>
+                            <div id="square2" class="square square-2" style="position: fixed"></div>
+                            <div id="square3" class="square square-3" style="position: fixed"></div>
+                            <div id="square4" class="square square-4" style="position: fixed"></div>
+                            <div id="square5" class="square square-5" style="position: fixed"></div>
+                            <div id="square6" class="square square-6" style="position: fixed"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <rutu:doNothing>
+                &footer;
+            </rutu:doNothing>
+        </div>
+        <rutu:doNothing>
+            &script;
+        </rutu:doNothing>
+    </body>
+</html>

@@ -1,6 +1,7 @@
 package net.proximastro.controller;
 
 import net.proximastro.app.RouteController;
+import net.proximastro.webserveur.dom.DOMStudent;
 import net.proximastro.webserveur.sax.SAXBody;
 import org.xml.sax.SAXException;
 import org.xml.sax.XMLReader;
@@ -31,18 +32,11 @@ public class TestController2 extends RouteController {
 
     public String parse() throws SAXException, IOException, ParserConfigurationException {
         HashMap<String,Object> ht = new HashMap<String,Object>();
-        ArrayList<HashMap<String,String>> list = new ArrayList<>();
-        list.add(this.GETMap);
-        list.add(this.GETMap);
-        list.add(this.GETMap);
-        list.add(this.GETMap);
-        list.add(this.GETMap);
-        list.add(this.GETMap);
-        ht.put("get",list);
+        ht.put("students",DOMStudent.toHashMap());
         SAXBody handler = new SAXBody(ht);
         SAXParserFactory parserFactory = SAXParserFactory.newInstance();
         SAXParser parser = parserFactory.newSAXParser();
-        parser.parse("./src/main/resources/views/pages/listPage.xml", handler);
+        parser.parse("./src/main/resources/views/pages/viewStudent.xml", handler);
         return handler.getHtmlCorps();
     }
 }

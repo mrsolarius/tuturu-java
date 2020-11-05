@@ -16,10 +16,11 @@ import javax.xml.transform.stream.StreamResult;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class DOMStudent {
-    private static String studentsFileDir = "src/main/resources/data/student_data.xml";
+    private static String studentsFileDir = "./src/main/resources/data/student_data.xml";
     private static List<Student> studentList;
 
     public static Document getDocument() throws IOException, SAXException, ParserConfigurationException {
@@ -165,6 +166,22 @@ public class DOMStudent {
 
         addOrUpdateStudent(new Student(3, "jeantet", "Joey", "tuturu"));
         deleteStudent(new Student(5, "test", "test","test"));
+    }
+
+    public static ArrayList<HashMap<String, Object>> toHashMap(){
+        ArrayList<HashMap<String, Object>> arrayListToReturn = new ArrayList<>();
+        studentList = getListStudents();
+        for(Student student: studentList){
+            HashMap<String, Object> hashMap = new HashMap<>();
+            hashMap.put("id", student.getId());
+            hashMap.put("firstName", student.getFirstName());
+            hashMap.put("lastName", student.getLastName());
+            hashMap.put("group", student.getGroup());
+
+            arrayListToReturn.add(hashMap);
+        }
+
+        return arrayListToReturn;
     }
 
 }
