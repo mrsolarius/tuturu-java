@@ -26,14 +26,14 @@
                                         <h4 class="card-title">Etudiant</h4>
                                     </div>
                                     <div class="card-body">
-                                        <form class="form">
+                                        <form class="form" method="POST">
                                             <div class="input-group">
                                                 <div class="input-group-prepend">
                                                     <div class="input-group-text">
                                                         <i class="tim-icons icon-single-02"></i>
                                                     </div>
                                                 </div>
-                                                <input type="text" class="form-control" placeholder="Nom"/>
+                                                <input type="text" class="form-control" placeholder="Prénom" name="firstName"/>
                                             </div>
                                             <div class="input-group">
                                                 <div class="input-group-prepend">
@@ -41,7 +41,7 @@
                                                         <i class="tim-icons icon-badge"></i>
                                                     </div>
                                                 </div>
-                                                <input type="text" class="form-control" placeholder="Prenom"/>
+                                                <input type="text" class="form-control" placeholder="Nom" name="lastName"/>
                                             </div>
                                             <div class="input-group">
                                                 <div class="input-group-prepend">
@@ -49,12 +49,12 @@
                                                         <i class="tim-icons icon-molecule-40"></i>
                                                     </div>
                                                 </div>
-                                                <input type="text" class="form-control" placeholder="Group"/>
+                                                <input type="text" class="form-control" placeholder="group" name="group"/>
+                                            </div>
+                                            <div class="card-footer">
+                                                <a href="javascript:void(0)" class="btn btn-info btn-round btn-lg">Ajouter</a>
                                             </div>
                                         </form>
-                                    </div>
-                                    <div class="card-footer">
-                                        <a href="javascript:void(0)" class="btn btn-info btn-round btn-lg">Ajouter</a>
                                     </div>
                                 </div>
                             </div>

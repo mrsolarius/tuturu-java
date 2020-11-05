@@ -47,6 +47,10 @@ public class SAXBody extends DefaultHandler {
 
         StringBuilder tempHtmlCorp = new StringBuilder("<").append(qName);
         for (int i = 0; i < attributes.getLength(); i++) {
+            /*String valeur = "";
+            if(attributes.getValue(i).startsWith("$(") && attributes.getValue(i).endsWith(")")){
+                valeur = parms.get(attributes.getValue(i));
+            }*/
             tempHtmlCorp.append(" ").append(attributes.getQName(i)).append("=\"").append(attributes.getValue(i)).append("\"");
         }
         tempHtmlCorp.append(">");

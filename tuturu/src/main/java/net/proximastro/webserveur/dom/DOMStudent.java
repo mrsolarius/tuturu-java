@@ -23,6 +23,10 @@ public class DOMStudent {
     private static String studentsFileDir = "./src/main/resources/data/student_data.xml";
     private static List<Student> studentList;
 
+    public DOMStudent(){
+        studentList = getListStudents();
+    }
+
     public static Document getDocument() throws IOException, SAXException, ParserConfigurationException {
         File studentsFile = new File(studentsFileDir);
         DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
@@ -76,8 +80,18 @@ public class DOMStudent {
         addChildElement(elementStudent, "firstName", student.getFirstName());
         addChildElement(elementStudent, "lastName", student.getLastName());
         addChildElement(elementStudent, "group", student.getGroup());
+        studentList.add(student);
 
         element.appendChild(elementStudent);
+    }
+
+    public Student getStudentById(int idStudent){
+        for (Student s: studentList) {
+            if(idStudent == s.getId()){
+                return s;
+            }
+        }
+        return null;
     }
 
     private boolean updateStudent(Document document, Student student) {
@@ -88,14 +102,20 @@ public class DOMStudent {
         for(i=0; i<nodeList.getLength(); i++){
             Element elementEtudiant = (Element) nodeList.item(i);
             if(elementEtudiant.getAttributeNode("id").getValue().equals(String.valueOf(student.getId()))){
+                Student studentFromList = getStudentById(student.getId());
+
                 Node firstName = elementEtudiant.getElementsByTagName("firstName").item(0).getFirstChild();
                 firstName.setNodeValue(student.getFirstName());
+                studentFromList.setId(student.getId());
 
                 Node lastName = elementEtudiant.getElementsByTagName("lastName").item(0).getFirstChild();
                 lastName.setNodeValue(student.getLastName());
+                studentFromList.setLastName(student.getLastName());
 
                 Node group = elementEtudiant.getElementsByTagName("group").item(0).getFirstChild();
                 group.setNodeValue(student.getGroup());
+                studentFromList.setGroup(student.getGroup());
+
                 return true;
             }
             i++;
