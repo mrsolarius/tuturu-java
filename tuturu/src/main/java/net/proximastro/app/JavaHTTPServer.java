@@ -221,10 +221,80 @@ public class JavaHTTPServer implements Runnable{
 
     // return supported MIME Types
     private String getContentType(String fileRequested) {
-        if (fileRequested.endsWith(".htm")  ||  fileRequested.endsWith(".html"))
+        /**
+         * Application
+         */
+        if (fileRequested.endsWith(".pdf")){
+            return "application/pdf";
+        }
+        else if (fileRequested.endsWith(".json")){
+            return "application/json";
+        }
+        else if (fileRequested.endsWith(".zip")){
+            return "application/zip";
+        }
+        /**
+         * Text
+         */
+        else if (fileRequested.endsWith(".htm")  ||  fileRequested.endsWith(".html")){
             return "text/html";
-        else
+        }
+        else if (fileRequested.endsWith(".xml")){
+            return "text/xml";
+        }
+        else if (fileRequested.endsWith(".css")){
+            return "text/css";
+        }else if (fileRequested.endsWith(".csv")){
+            return "text/csv";
+        }
+        /**
+         * Audio
+         */
+        else if (fileRequested.endsWith(".mp3")){
+            return "audio/mpeg";
+        }else if (fileRequested.endsWith(".wma")){
+            return "audio/x-ms-wma";
+        }else if (fileRequested.endsWith(".wav")){
+            return "audio/x-wav";
+        }
+        /**
+         * Video
+         */
+        else if (fileRequested.endsWith(".mpeg")){
+            return "video/mpeg";
+        }else if (fileRequested.endsWith(".mp4")) {
+            return "video/mp4";
+        }
+        else if (fileRequested.endsWith(".fly")) {
+            return "video/fly";
+        }
+        else if (fileRequested.endsWith(".webm")) {
+            return "video/webm";
+        }
+        /**
+         * Image
+         */
+        else if (fileRequested.endsWith(".gif")) {
+            return "image/gif";
+        }else if (fileRequested.endsWith(".jpeg")||fileRequested.endsWith(".jpg")) {
+            return "image/jpeg";
+        }else if (fileRequested.endsWith(".png")) {
+            return "image/png";
+        }else if (fileRequested.endsWith(".tiff")||fileRequested.endsWith(".tif")) {
+            return "image/tiff";
+        }else if (fileRequested.endsWith(".ico")) {
+            return "image/vnd.microsoft.icon";
+        }else if (fileRequested.endsWith(".icns")) {
+            return "image/x-icon";
+        }else if (fileRequested.endsWith(".svg")||fileRequested.endsWith(".svgz")) {
+            return "image/svg+xml";
+        }
+        /**
+         * default
+         */
+        else {
             return "text/plain";
+        }
     }
 
     private void fileNotFound(PrintWriter out, OutputStream dataOut, String fileRequested) throws IOException {
@@ -244,14 +314,8 @@ public class JavaHTTPServer implements Runnable{
     }
 
     public static String headerBuilder(int statusCode, String statusMessage,String contentMimeType,int fileLength){
-        contentMimeType = contentMimeType == null ? "text/plain" : contentMimeType;
-        return "HTTP/1.1 "+statusCode+" "+statusMessage+"\\r\\n"+
-                "Server: Java Tuturu HTTP Server : 1.0\\r\\n"+
-                "Date: " + new Date()+"\\r\\n" +
-                "Connection: close\\r\\n"+
-                "Content-type: " + contentMimeType+"\\r\\n"+
-                "Content-length: " + fileLength+"\\r\\n"+
-                "\\n";
+        contentMimeType = contentMimeType == null ? "text/html" : contentMimeType;
+        return "HTTP/1.1 "+statusCode+" "+statusMessage;
     }
 
 }
