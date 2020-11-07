@@ -12,6 +12,8 @@ import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.net.URISyntaxException;
+import java.net.URL;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.StringTokenizer;
@@ -19,10 +21,10 @@ import java.util.StringTokenizer;
 // chaque client et récupérer dans un seul thread
 public class JavaHTTPServer implements Runnable{
 
-    static final File WEB_ROOT = new File("./src/main/resources/public");
+    static final File WEB_ROOT = new File(PATH.publicPATH);
     static final String DEFAULT_FILE = "index.html";
     static final String FILE_NOT_FOUND = "404.html";
-    static final String METHOD_NOT_SUPPORTED = "not_supported.html";
+    static final String METHOD_NOT_SUPPORTED = "500.html";
     // port to listen connection
     static final int PORT = 8080;
 
@@ -40,9 +42,9 @@ public class JavaHTTPServer implements Runnable{
 
     public static void main(String[] args) {
         try {
+            System.out.println(WEB_ROOT.getPath());
             ServerSocket serverConnect = new ServerSocket(PORT);
             System.out.println("Le Server démmare...\nIl écoute sur le port : " + PORT + " ...\n");
-
             // écoute des requete des utilisateur utilisateur dans une boucle infini
             while (true) {
                 JavaHTTPServer myServer = new JavaHTTPServer(serverConnect.accept());
@@ -108,7 +110,6 @@ public class JavaHTTPServer implements Runnable{
                         }
 
                     } else {
-
                         File file = new File(WEB_ROOT, URI);
                         int fileLength = (int) file.length();
                         String content = getContentType(URI);
@@ -146,12 +147,21 @@ public class JavaHTTPServer implements Runnable{
                                             .split("\r\n")
                                             .length-1]);
 
-                        out.println(headerBuilder(200, "OK Je te jure sa passe xD", null, render.length()));
-                        out.println(); // Line vide entre le head et le contenu TR2S IMPORTANT
-                        out.flush();
-
-                        dataOut.write(render.getBytes(), 0, render.length());
-                        dataOut.flush();
+                        if (render.startsWith("301")){
+                            out.println("HTTP/1.1 301 Moved Permanently\n" +
+                                    "Location: "+render.replace("301 url:","").replace("\n",""));
+                            out.println();
+                            out.flush();
+                            byte[] t = new byte[0];
+                            dataOut.write(t, 0, render.length());
+                            dataOut.flush();
+                        }else {
+                            out.println(headerBuilder(200, "OK Je te jure sa passe xD", null, render.length()));
+                            out.println(); // Line vide entre le head et le contenu TR2S IMPORTANT
+                            out.flush();
+                            dataOut.write(render.getBytes(), 0, render.length());
+                            dataOut.flush();
+                        }
 
                         if (verbose) {
                             System.out.println("La route " + routeURI + " à bien était rendu");
@@ -221,10 +231,80 @@ public class JavaHTTPServer implements Runnable{
 
     // return supported MIME Types
     private String getContentType(String fileRequested) {
-        if (fileRequested.endsWith(".htm")  ||  fileRequested.endsWith(".html"))
+        /**
+         * Application
+         */
+        if (fileRequested.endsWith(".pdf")){
+            return "application/pdf";
+        }
+        else if (fileRequested.endsWith(".json")){
+            return "application/json";
+        }
+        else if (fileRequested.endsWith(".zip")){
+            return "application/zip";
+        }
+        /**
+         * Text
+         */
+        else if (fileRequested.endsWith(".htm")  ||  fileRequested.endsWith(".html")){
             return "text/html";
-        else
+        }
+        else if (fileRequested.endsWith(".xml")){
+            return "text/xml";
+        }
+        else if (fileRequested.endsWith(".css")){
+            return "text/css";
+        }else if (fileRequested.endsWith(".csv")){
+            return "text/csv";
+        }
+        /**
+         * Audio
+         */
+        else if (fileRequested.endsWith(".mp3")){
+            return "audio/mpeg";
+        }else if (fileRequested.endsWith(".wma")){
+            return "audio/x-ms-wma";
+        }else if (fileRequested.endsWith(".wav")){
+            return "audio/x-wav";
+        }
+        /**
+         * Video
+         */
+        else if (fileRequested.endsWith(".mpeg")){
+            return "video/mpeg";
+        }else if (fileRequested.endsWith(".mp4")) {
+            return "video/mp4";
+        }
+        else if (fileRequested.endsWith(".fly")) {
+            return "video/fly";
+        }
+        else if (fileRequested.endsWith(".webm")) {
+            return "video/webm";
+        }
+        /**
+         * Image
+         */
+        else if (fileRequested.endsWith(".gif")) {
+            return "image/gif";
+        }else if (fileRequested.endsWith(".jpeg")||fileRequested.endsWith(".jpg")) {
+            return "image/jpeg";
+        }else if (fileRequested.endsWith(".png")) {
+            return "image/png";
+        }else if (fileRequested.endsWith(".tiff")||fileRequested.endsWith(".tif")) {
+            return "image/tiff";
+        }else if (fileRequested.endsWith(".ico")) {
+            return "image/vnd.microsoft.icon";
+        }else if (fileRequested.endsWith(".icns")) {
+            return "image/x-icon";
+        }else if (fileRequested.endsWith(".svg")||fileRequested.endsWith(".svgz")) {
+            return "image/svg+xml";
+        }
+        /**
+         * default
+         */
+        else {
             return "text/plain";
+        }
     }
 
     private void fileNotFound(PrintWriter out, OutputStream dataOut, String fileRequested) throws IOException {
@@ -244,14 +324,8 @@ public class JavaHTTPServer implements Runnable{
     }
 
     public static String headerBuilder(int statusCode, String statusMessage,String contentMimeType,int fileLength){
-        contentMimeType = contentMimeType == null ? "text/plain" : contentMimeType;
-        return "HTTP/1.1 "+statusCode+" "+statusMessage+"\\r\\n"+
-                "Server: Java Tuturu HTTP Server : 1.0\\r\\n"+
-                "Date: " + new Date()+"\\r\\n" +
-                "Connection: close\\r\\n"+
-                "Content-type: " + contentMimeType+"\\r\\n"+
-                "Content-length: " + fileLength+"\\r\\n"+
-                "\\n";
+        contentMimeType = contentMimeType == null ? "text/html" : contentMimeType;
+        return "HTTP/1.1 "+statusCode+" "+statusMessage;
     }
 
 }

@@ -1,0 +1,84 @@
+<?xml version="1.0" standalone="no" ?>
+<!DOCTYPE doc [
+        <!ENTITY nav SYSTEM "../scaffolding/nav.xml">
+        <!ENTITY head SYSTEM "../scaffolding/head.xml">
+        <!ENTITY card SYSTEM "../scaffolding/card.xml">
+        <!ENTITY footer SYSTEM "../scaffolding/footer.xml">
+        <!ENTITY script SYSTEM "../scaffolding/script.xml">
+        ]>
+<html>
+    <head>
+        &head;
+    </head>
+    <body class="register-page">
+        <!--Voici un de nos élement de templating le if ! -->
+        <rutu:if condition="${success} == 'add'">
+            <div class="alert alert-info alert-with-icon" style="position: fixed;bottom: 0;z-index: 10;left: 1.4vw;">
+                <button type="button" aria-hidden="true" class="close" data-dismiss="alert" aria-label="Close">
+                    <i class="tim-icons icon-simple-remove"></i>
+                </button>
+                <span data-notify="icon" class="tim-icons icon-trophy"></span>
+                <span><b> Bravos ! - </b> L'etudiant à était ajouter =D.</span>
+            </div>
+        </rutu:if>
+        <rutu:if condition="${success} == 'edit'">
+            <div class="alert alert-info alert-with-icon" style="position: fixed;bottom: 0;z-index: 10;left: 1.4vw;">
+                <button type="button" aria-hidden="true" class="close" data-dismiss="alert" aria-label="Close">
+                    <i class="tim-icons icon-simple-remove"></i>
+                </button>
+                <span data-notify="icon" class="tim-icons icon-trophy"></span>
+                <span><b> Bravos ! - </b> L'etudiant à modifier avec success =D.</span>
+            </div>
+        </rutu:if>
+        <rutu:if condition="${success} == 'delete'">
+            <div class="alert alert-info alert-with-icon" style="position: fixed;bottom: 0;z-index: 10;left: 1.4vw;">
+                <button type="button" aria-hidden="true" class="close" data-dismiss="alert" aria-label="Close">
+                    <i class="tim-icons icon-simple-remove"></i>
+                </button>
+                <span data-notify="icon" class="tim-icons icon-trophy"></span>
+                <span><b> Bravos ! - </b> L'etudiant à bien était suprimer =D.</span>
+            </div>
+        </rutu:if>
+        <rutu:if condition="${error} == 'delete'">
+            <div class="alert alert-danger alert-with-icon" style="position: fixed;bottom: 0;z-index: 10;left: 1.4vw;">
+                <button type="button" aria-hidden="true" class="close" data-dismiss="alert" aria-label="Close">
+                    <i class="tim-icons icon-simple-remove"></i>
+                </button>
+                <span data-notify="icon" class="tim-icons icon-support-17"></span>
+                <span>
+                    <b> Oh oups! - </b> Il y a eu une erreur lors de la supression de l'etudiant.</span>
+            </div>
+        </rutu:if>
+        &nav;
+        <div class="wrapper">
+            <div class="page-header" style="max-height:none;">
+                <div class="page-header-image"></div>
+                <div class="content">
+                    <div class="container" style="height: auto">
+                        <div class="row">
+                            <!--Aun autre élément de tempating ce trouve être le foreatch ! -->
+                            <rutu:for-each select="students">
+                                <div class="col-lg-5 col-md-6 offset-lg-0 offset-md-3">
+                                    &card;
+                                </div>
+                            </rutu:for-each>
+                            <div class="register-bg"></div>
+                            <div id="square1" class="square square-1" style="position: fixed"></div>
+                            <div id="square2" class="square square-2" style="position: fixed"></div>
+                            <div id="square3" class="square square-3" style="position: fixed"></div>
+                            <div id="square4" class="square square-4" style="position: fixed"></div>
+                            <div id="square5" class="square square-5" style="position: fixed"></div>
+                            <div id="square6" class="square square-6" style="position: fixed"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <rutu:doNothing>
+                &footer;
+            </rutu:doNothing>
+        </div>
+        <rutu:doNothing>
+            &script;
+        </rutu:doNothing>
+    </body>
+</html>

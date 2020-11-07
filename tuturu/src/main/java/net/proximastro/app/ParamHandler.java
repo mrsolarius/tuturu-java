@@ -1,5 +1,6 @@
 package net.proximastro.app;
 
+import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 
 class ParamHandler {
@@ -15,7 +16,7 @@ class ParamHandler {
                 //verification qu'il y a bien une valeur apres le =
                 if (keyValue.length == 2) {
                     //ajouts des paramettre à la hashmap
-                    getParams.put(keyValue[0], keyValue[1]);
+                    getParams.put(keyValue[0], java.net.URLDecoder.decode(keyValue[1], StandardCharsets.UTF_8));
                 }
             }
         }
@@ -33,7 +34,7 @@ class ParamHandler {
             //verification qu'il y a bien une valeur apres le =
             if (keyValue.length == 2) {
                 //ajouts des paramettre à la hashmap
-                postParams.put(keyValue[0], keyValue[1]);
+                postParams.put(keyValue[0], java.net.URLDecoder.decode(keyValue[1], StandardCharsets.UTF_8));
             }
         }
         return postParams;

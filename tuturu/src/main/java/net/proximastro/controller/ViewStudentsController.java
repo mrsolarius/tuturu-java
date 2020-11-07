@@ -1,0 +1,47 @@
+package net.proximastro.controller;
+
+import net.proximastro.app.PATH;
+import net.proximastro.app.RouteController;
+import net.proximastro.webserveur.dom.DOMStudent;
+import net.proximastro.webserveur.sax.SAXBody;
+import org.xml.sax.SAXException;
+import org.xml.sax.XMLReader;
+import org.xml.sax.helpers.ParserFactory;
+import org.xml.sax.helpers.XMLReaderFactory;
+
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.parsers.SAXParser;
+import javax.xml.parsers.SAXParserFactory;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
+
+
+public class ViewStudentsController extends RouteController {
+
+    public ViewStudentsController(){}
+
+    @Override
+    public String index() {
+        try{
+            return parse();
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return "err";
+    }
+
+    public String parse() throws SAXException, IOException, ParserConfigurationException {
+        HashMap<String,Object> ht = new HashMap<String,Object>();
+        ht.put("students",DOMStudent.toHashMap());
+        if (GETMap.containsKey("success"))
+            ht.put("success",GETMap.get("success"));
+        if (GETMap.containsKey("error"))
+            ht.put("error",GETMap.get("error"));
+        SAXBody handler = new SAXBody(ht);
+        SAXParserFactory parserFactory = SAXParserFactory.newInstance();
+        SAXParser parser = parserFactory.newSAXParser();
+        parser.parse(PATH.viewPATH+"/pages/viewStudents.xml", handler);
+        return handler.getHtmlCorps();
+    }
+}

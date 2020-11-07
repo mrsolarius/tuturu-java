@@ -8,6 +8,7 @@ public class ParseCondition {
     private static final List<String> arrayCondition = Arrays.asList(">", ">=", "==", "!=", "<", "<=");
 
     public static boolean checkCondition(String str, HashMap<String, Object> parms){
+        final List<String> arrayCondition = Arrays.asList(">", ">=", "==", "!=", "<", "<=");
         String[] strSplit = str.split(" ");
         int nbSpace = strSplit.length;
 
@@ -25,9 +26,13 @@ public class ParseCondition {
                     String element = strSplit[indexStrSplit];
                     Object elementToInsert = null;
 
-                    if (compteur != 1 && element.startsWith("$(") && element.endsWith(")")) {
+                    if (compteur != 1 && element.startsWith("${") && element.endsWith("}")) {
                         element = element.substring(2, element.length() - 1);
-                        elementToInsert = parms.get(element);
+                        if(parms.containsKey(element)) {
+                            elementToInsert = parms.get(element);
+                        }else{
+                            return false;
+                        }
                     } else if (compteur != 1 && (element.startsWith("'") && element.endsWith("'") || element.startsWith("\"") && element.endsWith("\""))) {
                         elementToInsert = element.substring(1, element.length() - 1);
                     } else if (compteur != 1 && ("true".equals(element) || "false".equals(element))) {
@@ -46,102 +51,117 @@ public class ParseCondition {
                 Object valeurA = condition[0];
                 Object valeurB = condition[2];
 
-                //vérification des 2 types
-                if (valeurA.getClass().getName().equals(valeurB.getClass().getName()) || valeurA instanceof Float && valeurB instanceof Integer || valeurA instanceof Integer && valeurB instanceof Float) {
-                    if(valeurA instanceof String){
-                        if ("==".equals(condition[1])) {
-                            if (!valeurA.equals(valeurB)) {
-                                actualIsValid = false;
+                if (valeurA!=null && valeurB!=null) {
+                    //vérification des 2 types
+                    if (valeurA.getClass().getName().equals(valeurB.getClass().getName()) || valeurA instanceof Float && valeurB instanceof Integer || valeurA instanceof Integer && valeurB instanceof Float) {
+                        if (valeurA instanceof String) {
+                            if ("==".equals(condition[1])) {
+                                if (!valeurA.equals(valeurB)) {
+                                    actualIsValid = false;
+                                }
+                            } else if ("!=".equals(condition[1])) {
+                                if (valeurA.equals(valeurB)) {
+                                    actualIsValid = false;
+                                }
                             }
-                        } else if ("!=".equals(condition[1])) {
-                            if (valeurA.equals(valeurB)) {
-                                actualIsValid = false;
-                            }
-                        }
-                    }else if(valeurA instanceof Float || valeurA instanceof Integer){
-                        Float v1 = Float.valueOf(valeurA.toString());
-                        Float v2 = Float.valueOf(valeurB.toString());
+                        } else if (valeurA instanceof Float || valeurA instanceof Integer) {
+                            Float v1 = Float.valueOf(valeurA.toString());
+                            Float v2 = Float.valueOf(valeurB.toString());
 
 
-                        switch ((String) condition[1]) {
-                            case ">=":
-                                if(v1 < v2){
+                            switch ((String) condition[1]) {
+                                case ">=":
+                                    if (v1 < v2) {
+                                        actualIsValid = false;
+                                    }
+                                    break;
+                                case ">":
+                                    if (v1 <= v2) {
+                                        actualIsValid = false;
+                                    }
+                                    break;
+                                case "==":
+                                    if (!v1.equals(v2)) {
+                                        actualIsValid = false;
+                                    }
+                                    break;
+                                case "!=":
+                                    if (v1.equals(v2)) {
+                                        actualIsValid = false;
+                                    }
+                                    break;
+                                case "<":
+                                    if (v1 >= v2) {
+                                        actualIsValid = false;
+                                    }
+                                    break;
+                                case "<=":
+                                    if (v1 > v2) {
+                                        actualIsValid = false;
+                                    }
+                                    break;
+                            }
+                        } else if (valeurA instanceof Boolean) {
+                            if ("==".equals(condition[1])) {
+                                if (!valeurA.equals(valeurB)) {
                                     actualIsValid = false;
                                 }
-                                break;
-                            case ">":
-                                if(v1 <= v2){
+                            } else if ("!=".equals(condition[1])) {
+                                if (valeurA.equals(valeurB)) {
                                     actualIsValid = false;
                                 }
-                                break;
-                            case "==":
-                                if(!v1.equals(v2)){
+                            }
+                        } else {
+                            if ("==".equals(condition[1])) {
+                                if (!valeurA.equals(valeurB)) {
                                     actualIsValid = false;
                                 }
-                                break;
-                            case "!=":
-                                if(v1.equals(v2)){
+                            } else if ("!=".equals(condition[1])) {
+                                if (valeurA.equals(valeurB)) {
                                     actualIsValid = false;
                                 }
-                                break;
-                            case "<":
-                                if(v1 >= v2){
-                                    actualIsValid = false;
-                                }
-                                break;
-                            case "<=":
-                                if(v1 > v2){
-                                    actualIsValid = false;
-                                }
-                                break;
+                            }
                         }
-                    }else if(valeurA instanceof Boolean){
+
+                    }
+                    if (valeurA instanceof String && valeurB instanceof String) {
                         if ("==".equals(condition[1])) {
-                            if (!valeurA.equals(valeurB)) {
-                                actualIsValid = false;
-                            }
                         } else if ("!=".equals(condition[1])) {
-                            if (valeurA.equals(valeurB)) {
-                                actualIsValid = false;
-                            }
-                        }
-                    }else{
-                        if ("==".equals(condition[1])) {
-                            if (!valeurA.equals(valeurB)) {
-                                actualIsValid = false;
-                            }
-                        } else if ("!=".equals(condition[1])) {
-                            if (valeurA.equals(valeurB)) {
-                                actualIsValid = false;
+                            if (actualIsValid) {
+                                actualIsValid = !((String) valeurA).equalsIgnoreCase(((String) valeurB));
                             }
                         }
                     }
 
-                }
-                if (valeurA instanceof String && valeurB instanceof String) {
-                    if ("==".equals(condition[1])) {
-                    } else if ("!=".equals(condition[1])) {
-                        if (actualIsValid) {
-                            actualIsValid = !((String) valeurA).equalsIgnoreCase(((String) valeurB));
+                    if (indexStrSplit < strSplit.length) {
+                        switch (strSplit[indexStrSplit]) {
+                            case "or":
+                                conditionEstValid = actualIsValid;
+                                actualIsValid = true;
+                                break;
+                            case "and":
+
+                                break;
                         }
+                    } else {
+                        conditionEstValid = actualIsValid;
                     }
+                    indexStrSplit++;
                 }
-
-                if(indexStrSplit < strSplit.length) {
-                    switch (strSplit[indexStrSplit]) {
-                        case "or":
-                            conditionEstValid = actualIsValid;
-                            actualIsValid = true;
-                            break;
-                        case "and":
-
-                            break;
-                    }
-                }
-                indexStrSplit++;
             }
-
             return conditionEstValid;
+        }else if(nbSpace == 1){
+            if(str.startsWith("${") && str.endsWith("}")){
+                str = str.substring(2, str.length()-1);
+                if(parms.containsKey(str)){
+                    if(parms.get(str) instanceof Boolean){
+                        return (Boolean) parms.get(str);
+                    }
+                    return true;
+                }else{
+                    return false;
+                }
+            }
         }
         return false;
     }

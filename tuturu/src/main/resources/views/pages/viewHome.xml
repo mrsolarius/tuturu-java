@@ -1,0 +1,56 @@
+<?xml version="1.0" standalone="no" ?>
+<!DOCTYPE doc [
+        <!ENTITY nav SYSTEM "../scaffolding/nav.xml">
+        <!ENTITY head SYSTEM "../scaffolding/head.xml">
+        <!ENTITY footer SYSTEM "../scaffolding/footer.xml">
+        <!ENTITY script SYSTEM "../scaffolding/script.xml">
+        ]>
+<html>
+    <head>
+        &head;
+    </head>
+    <body class="index-page">
+        <div class="wrapper">
+            &nav;
+            <div class="page-header header-filter">
+                <div class="squares square1"></div>
+                <div class="squares square2"></div>
+                <div class="squares square3"></div>
+                <div class="squares square4"></div>
+                <div class="squares square5"></div>
+                <div class="squares square6"></div>
+                <div class="squares square7"></div>
+                <div class="container">
+                    <div class="content-center brand">
+                        <h1 class="h1-seo">TUTURU•</h1>
+                        <h2 style="color: #ffffff;font-weight: 1000;font-size: 2rem;">シュタインズ・ゲート</h2>
+                        <h3>Le Fantastique Framwork Sponsorisé par Steins Gate.</h3>
+                    </div>
+                </div>
+            </div>
+            <div class="main">
+                <div class="section section-basic" id="basic-elements">
+                    <img src="assets/img/path1.png" class="path"></img>
+                    <div class="container">
+                        <h1 class="title">Documentation du Projet</h1>
+                        <h2 class="title">Intruduction</h2>
+                        <p>Le but de se projet et de réaliser une application java capble d'assurer le role de serveur web ainci que d'assurer la sauvgarde et la mise en forme des données. Ceux à l'aide des deux parseur XML : le SAX et le DOM.</p>
+                        <p>L'intert et double car en plus de nous faire découvrire les requete bas niveau proche de la couche réseau grace au socket. Se projet nous à permis d'améliorer nos conaissence sur le parseur DOM ainci que de découvrire l'utiliter et l'Interet du parseur SAX </p>
+                    </div>
+                </div>
+                <div class="section section-basic">
+                    <img src="assets/img/path3.png" class="path"></img>
+                    <div class="container">
+                        <h2 class="title">Information basique</h2>
+                    </div>
+                </div>
+            </div>
+            <rutu:doNothing>
+                &footer;
+            </rutu:doNothing>
+        </div>
+    <rutu:doNothing>
+        &script;
+    </rutu:doNothing>
+</body>
+</html>

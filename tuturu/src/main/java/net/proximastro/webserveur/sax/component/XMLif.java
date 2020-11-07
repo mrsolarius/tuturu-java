@@ -26,7 +26,10 @@ public class XMLif extends XMLBuilder implements XMLDomBuilderInterface {
         if (ParseCondition.checkCondition(this.condition,this.hashMap)){
             tempXMLBuilder = new StringBuilder(arr[0]).append("</rutu:doNothing>");
         }else {
-            tempXMLBuilder = new StringBuilder("<rutu:doNothing>").append(arr[1]);
+            if (arr.length>1)
+                tempXMLBuilder = new StringBuilder("<rutu:doNothing>").append(arr[1]);
+            else
+                tempXMLBuilder = new StringBuilder("<rutu:doNothing>");
         }
         return this.buildHtml(this.hashMap);
     }

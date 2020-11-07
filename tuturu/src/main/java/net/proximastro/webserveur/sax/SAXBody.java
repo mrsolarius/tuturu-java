@@ -10,6 +10,8 @@ import javax.xml.parsers.ParserConfigurationException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class SAXBody extends DefaultHandler {
     private HashMap<String, Object> parms;
@@ -47,14 +49,21 @@ public class SAXBody extends DefaultHandler {
 
         StringBuilder tempHtmlCorp = new StringBuilder("<").append(qName);
         for (int i = 0; i < attributes.getLength(); i++) {
-            /*String valeur = "";
-            if(attributes.getValue(i).startsWith("$(") && attributes.getValue(i).endsWith(")")){
-                valeur = parms.get(attributes.getValue(i));
-            }*/
-            tempHtmlCorp.append(" ").append(attributes.getQName(i)).append("=\"").append(attributes.getValue(i)).append("\"");
+            String valeur = attributes.getValue(i);
+            Matcher m = Pattern.compile("(\\$\\{.+?})").matcher(valeur);
+            while(m.find()){
+                String key = m.group().replace("${","").replace("}","");
+                if (this.parms.containsKey(key))
+                    valeur = valeur.replace(m.group(), String.valueOf(this.parms.get(key))
+                            .replace("\"","&quot;")
+                            .replace("'","&apos;")
+                            .replace("<","&lt;")
+                            .replace(">","&gt;")
+                            .replace("&","&amp;"));
+            }
+            tempHtmlCorp.append(" ").append(attributes.getQName(i)).append("=\"").append(valeur).append("\"");
         }
         tempHtmlCorp.append(">");
-        System.out.println(htmlCorps.toString());
 
         path += "/" + qName;
         if (xmlForEach != null) {
@@ -75,7 +84,6 @@ public class SAXBody extends DefaultHandler {
                         if (attributes.getLength() > 0) {
                             if (attributes.getIndex("select") != -1) {
                                 if (!String.valueOf(this.parms.get(attributes.getValue("select"))).isEmpty()) {
-                                    System.out.println(attributes.getValue("select"));
                                     htmlCorps.append(this.parms.get(attributes.getValue("select")));
                                 }
                             }
