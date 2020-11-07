@@ -1,5 +1,6 @@
 package net.proximastro.controller;
 
+import net.proximastro.app.PATH;
 import net.proximastro.app.RouteController;
 import net.proximastro.webserveur.dom.DOMStudent;
 import net.proximastro.webserveur.model.Student;
@@ -63,7 +64,7 @@ public class AddOrUpdateStudentController extends RouteController {
         SAXBody handler = new SAXBody(map);
         SAXParserFactory parserFactory = SAXParserFactory.newInstance();
         SAXParser parser = parserFactory.newSAXParser();
-        parser.parse("./src/main/resources/views/pages/addStudent.xml", handler);
+        parser.parse(PATH.viewPATH+"/pages/addStudent.xml", handler);
         return handler.getHtmlCorps();
     }
 }

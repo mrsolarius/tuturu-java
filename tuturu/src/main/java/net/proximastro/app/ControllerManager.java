@@ -13,13 +13,14 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
 public class ControllerManager {
-    static final String ROUTES_EMPLACEMENT = "./src/main/resources/routes/routes.xml";
+    static final String ROUTES_EMPLACEMENT = PATH.routePATH;
     private HashMap<String,RouteController> routeControllers;
 
     public ControllerManager(){
@@ -27,7 +28,8 @@ public class ControllerManager {
         this.routeControllers = new HashMap<>();
         try {
             //récupération du fichier des routes
-            File file = new File(ROUTES_EMPLACEMENT);
+            URL fileURL = this.getClass().getResource(ROUTES_EMPLACEMENT);
+            File file = new File(String.valueOf(fileURL));
             DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
             DocumentBuilder db = dbf.newDocumentBuilder();
             //récupération du DOM

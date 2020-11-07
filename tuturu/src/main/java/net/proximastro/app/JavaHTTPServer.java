@@ -12,6 +12,8 @@ import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.net.URISyntaxException;
+import java.net.URL;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.StringTokenizer;
@@ -19,10 +21,10 @@ import java.util.StringTokenizer;
 // chaque client et récupérer dans un seul thread
 public class JavaHTTPServer implements Runnable{
 
-    static final File WEB_ROOT = new File("./src/main/resources/public");
+    static final File WEB_ROOT = new File(PATH.publicPATH);
     static final String DEFAULT_FILE = "index.html";
     static final String FILE_NOT_FOUND = "404.html";
-    static final String METHOD_NOT_SUPPORTED = "not_supported.html";
+    static final String METHOD_NOT_SUPPORTED = "500.html";
     // port to listen connection
     static final int PORT = 8080;
 
@@ -40,9 +42,9 @@ public class JavaHTTPServer implements Runnable{
 
     public static void main(String[] args) {
         try {
+            System.out.println(WEB_ROOT.getPath());
             ServerSocket serverConnect = new ServerSocket(PORT);
             System.out.println("Le Server démmare...\nIl écoute sur le port : " + PORT + " ...\n");
-
             // écoute des requete des utilisateur utilisateur dans une boucle infini
             while (true) {
                 JavaHTTPServer myServer = new JavaHTTPServer(serverConnect.accept());
@@ -108,7 +110,6 @@ public class JavaHTTPServer implements Runnable{
                         }
 
                     } else {
-
                         File file = new File(WEB_ROOT, URI);
                         int fileLength = (int) file.length();
                         String content = getContentType(URI);
