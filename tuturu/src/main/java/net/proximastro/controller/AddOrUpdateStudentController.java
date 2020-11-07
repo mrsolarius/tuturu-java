@@ -14,12 +14,16 @@ import java.util.HashMap;
 
 public class AddOrUpdateStudentController extends RouteController {
 
+    public AddOrUpdateStudentController(){
+    }
+
     @Override
     protected String index() {
-        DOMStudent domStudent = new DOMStudent();
 
-        if(this.URIMap.containsKey("id") && this.POSTMap.containsKey("firstName") && this.POSTMap.containsKey("lastName") && this.POSTMap.containsKey("group")){
-            int id = Integer.parseInt(this.URIMap.get("id"));
+        DOMStudent domStudent = new DOMStudent();
+        HashMap<String, Object> Map = new HashMap<>();
+        if(this.POSTMap.containsKey("id") && this.POSTMap.containsKey("firstName") && this.POSTMap.containsKey("lastName") && this.POSTMap.containsKey("group")){
+            int id = Integer.parseInt(this.POSTMap.get("id"));
             String firstName = this.POSTMap.get("firstName");
             String lastName = this.POSTMap.get("lastName");
             String group = this.POSTMap.get("group");
@@ -29,32 +33,31 @@ public class AddOrUpdateStudentController extends RouteController {
             }catch (Exception e){
                 e.printStackTrace();
             }
-            return "301 url:http://localhost:8080";
+            if (id<0)
+                return  "301 url:http://localhost:8080/student/views?success=add";
+            else
+                return  "301 url:http://localhost:8080/student/views?success=edit";
         }else if(this.URIMap.containsKey("id")){
             int id = Integer.parseInt(URIMap.get("id"));
-            HashMap<String, Object> Map = new HashMap<>();
-            if(id>0){
+
                 Student student = domStudent.getStudentById(id);
                 if(student != null){
+                    Map.put("id",URIMap.get("id"));
                     Map.put("firstName", student.getFirstName());
                     Map.put("lastName", student.getLastName());
                     Map.put("group", student.getGroup());
                 }else{
-                    return "ERROR";
+                    return  "301 url:http://localhost:8080/500.html";
                 }
-            }else{
-                Map.put("firstName", "");
-                Map.put("lastName", "");
-                Map.put("group", "");
-            }
-            try {
-                return parse(Map);
-            }catch (Exception e){
-                e.printStackTrace();
-            }
         }
-        return "err";
+        try {
+            return parse(Map);
+        }catch (Exception e){
+            e.printStackTrace();
+            return  "301 url:http://localhost:8080/500.html";
+        }
     }
+
 
     public String parse(HashMap<String, Object> map) throws SAXException, IOException, ParserConfigurationException {
         SAXBody handler = new SAXBody(map);

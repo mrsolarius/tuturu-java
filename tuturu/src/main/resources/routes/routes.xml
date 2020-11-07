@@ -1,6 +1,11 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <routes>
-    <route path="/test/lol" controler="TestController" method="GET"/>
-    <route path="/student/{id}" controler="TestController" method="GET|POST"/>
-    <route path="/" controler="TestController2" method="GET|POST"/>
+    <route path="/" controler="ViewHomeController" method="GET"/>
+    <route path="/licence" controler="ViewLicenceController" method="GET"/>
+    <route path="/search/" controler="SearchController" method="GET"/>
+    <route path="/search/{searchExpresion}" controler="SearchController" method="GET"/>
+    <route path="/student/edit/{id}" controler="AddOrUpdateStudentController" method="GET|POST"/>
+    <route path="/student/add/" controler="AddOrUpdateStudentController" method="GET|POST"/>
+    <route path="/student/delete/{id}" controler="DeleteStudentController" method="POST"/>
+    <route path="/student/views" controler="ViewStudentsController" method="GET"/>
 </routes>

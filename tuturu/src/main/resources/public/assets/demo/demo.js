@@ -174,5 +174,12 @@ demo = {
     });
 
 
-  }
+  },
+  search:function(event){
+      console.log(event.keyCode);
+      if (event.keyCode==13){
+        const val = document.getElementById("search").value;
+        window.location.pathname = "/search/"+val;
+      }
+    }
 }

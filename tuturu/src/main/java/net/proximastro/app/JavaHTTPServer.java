@@ -146,12 +146,21 @@ public class JavaHTTPServer implements Runnable{
                                             .split("\r\n")
                                             .length-1]);
 
-                        out.println(headerBuilder(200, "OK Je te jure sa passe xD", null, render.length()));
-                        out.println(); // Line vide entre le head et le contenu TR2S IMPORTANT
-                        out.flush();
-
-                        dataOut.write(render.getBytes(), 0, render.length());
-                        dataOut.flush();
+                        if (render.startsWith("301")){
+                            out.println("HTTP/1.1 301 Moved Permanently\n" +
+                                    "Location: "+render.replace("301 url:","").replace("\n",""));
+                            out.println();
+                            out.flush();
+                            byte[] t = new byte[0];
+                            dataOut.write(t, 0, render.length());
+                            dataOut.flush();
+                        }else {
+                            out.println(headerBuilder(200, "OK Je te jure sa passe xD", null, render.length()));
+                            out.println(); // Line vide entre le head et le contenu TR2S IMPORTANT
+                            out.flush();
+                            dataOut.write(render.getBytes(), 0, render.length());
+                            dataOut.flush();
+                        }
 
                         if (verbose) {
                             System.out.println("La route " + routeURI + " à bien était rendu");

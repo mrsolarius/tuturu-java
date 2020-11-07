@@ -53,14 +53,17 @@ public class SAXBody extends DefaultHandler {
             Matcher m = Pattern.compile("(\\$\\{.+?})").matcher(valeur);
             while(m.find()){
                 String key = m.group().replace("${","").replace("}","");
-                System.out.println("value: "+key);
-                System.out.println(m.group());
-                valeur = valeur.replace(m.group(), String.valueOf(this.parms.get(key)));
+                if (this.parms.containsKey(key))
+                    valeur = valeur.replace(m.group(), String.valueOf(this.parms.get(key))
+                            .replace("\"","&quot;")
+                            .replace("'","&apos;")
+                            .replace("<","&lt;")
+                            .replace(">","&gt;")
+                            .replace("&","&amp;"));
             }
             tempHtmlCorp.append(" ").append(attributes.getQName(i)).append("=\"").append(valeur).append("\"");
         }
         tempHtmlCorp.append(">");
-        System.out.println(htmlCorps.toString());
 
         path += "/" + qName;
         if (xmlForEach != null) {
@@ -81,7 +84,6 @@ public class SAXBody extends DefaultHandler {
                         if (attributes.getLength() > 0) {
                             if (attributes.getIndex("select") != -1) {
                                 if (!String.valueOf(this.parms.get(attributes.getValue("select"))).isEmpty()) {
-                                    System.out.println(attributes.getValue("select"));
                                     htmlCorps.append(this.parms.get(attributes.getValue("select")));
                                 }
                             }

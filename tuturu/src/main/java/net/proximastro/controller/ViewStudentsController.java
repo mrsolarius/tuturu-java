@@ -16,9 +16,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 
-public class TestController2 extends RouteController {
+public class ViewStudentsController extends RouteController {
 
-    public TestController2(){}
+    public ViewStudentsController(){}
 
     @Override
     public String index() {
@@ -33,10 +33,14 @@ public class TestController2 extends RouteController {
     public String parse() throws SAXException, IOException, ParserConfigurationException {
         HashMap<String,Object> ht = new HashMap<String,Object>();
         ht.put("students",DOMStudent.toHashMap());
+        if (GETMap.containsKey("success"))
+            ht.put("success",GETMap.get("success"));
+        if (GETMap.containsKey("error"))
+            ht.put("error",GETMap.get("error"));
         SAXBody handler = new SAXBody(ht);
         SAXParserFactory parserFactory = SAXParserFactory.newInstance();
         SAXParser parser = parserFactory.newSAXParser();
-        parser.parse("./src/main/resources/views/pages/viewStudent.xml", handler);
+        parser.parse("./src/main/resources/views/pages/viewStudents.xml", handler);
         return handler.getHtmlCorps();
     }
 }

@@ -22,18 +22,31 @@
                                 <div id="square8" class="square square-8"></div>
                                 <div class="card card-register">
                                     <div class="card-header">
-                                        <img class="card-img" style="margin-left: -65px;margin-top: -185px;border-radius: 20%;width: 390px;" src="../assets/img/square1.png" alt="Card image"/>
-                                        <h4 class="card-title">Etudiant</h4>
+                                        <img class="card-img" style="margin-left: -65px;margin-top: -185px;border-radius: 20%;width: 390px;" src="/assets/img/square1.png" alt="Card image"/>
+                                        <rutu:if condition="${id}">
+                                            <h4 class="card-title" style="text-transform: capitalize;">Editer</h4>
+                                            <rutu:else/>
+                                            <h4 class="card-title" style="text-transform: capitalize;">Ajouter</h4>
+                                        </rutu:if>
                                     </div>
                                     <div class="card-body">
                                         <form class="form" method="POST">
+                                            <rutu:if condition="${id}">
+                                                <input type="hidden" value="${id}" name="id"/>
+                                                <rutu:else/>
+                                                <input type="hidden" value="-1" name="id"/>
+                                            </rutu:if>
                                             <div class="input-group">
                                                 <div class="input-group-prepend">
                                                     <div class="input-group-text">
                                                         <i class="tim-icons icon-single-02"></i>
                                                     </div>
                                                 </div>
-                                                <input type="text" class="form-control" placeholder="Prénom" name="firstName"/>
+                                                <rutu:if condition="${id}">
+                                                        <input type="text" class="form-control" placeholder="Prénom" value="${firstName}" name="firstName"/>
+                                                    <rutu:else/>
+                                                        <input type="text" class="form-control" placeholder="Prénom" name="firstName"/>
+                                                </rutu:if>
                                             </div>
                                             <div class="input-group">
                                                 <div class="input-group-prepend">
@@ -41,7 +54,11 @@
                                                         <i class="tim-icons icon-badge"></i>
                                                     </div>
                                                 </div>
-                                                <input type="text" class="form-control" placeholder="Nom" name="lastName"/>
+                                                <rutu:if condition="${id}">
+                                                        <input type="text" class="form-control" placeholder="Nom" value="${lastName}" name="lastName"/>
+                                                    <rutu:else/>
+                                                        <input type="text" class="form-control" placeholder="Nom" name="lastName"/>
+                                                </rutu:if>
                                             </div>
                                             <div class="input-group">
                                                 <div class="input-group-prepend">
@@ -49,10 +66,19 @@
                                                         <i class="tim-icons icon-molecule-40"></i>
                                                     </div>
                                                 </div>
-                                                <input type="text" class="form-control" placeholder="group" name="group"/>
+                                                <rutu:if condition="${id}">
+                                                        <input type="text" class="form-control" placeholder="Group" value="${group}" name="group"/>
+                                                    <rutu:else/>
+                                                        <input type="text" class="form-control" placeholder="Group" name="group"/>
+                                                </rutu:if>
                                             </div>
+
                                             <div class="card-footer">
-                                                <a href="javascript:void(0)" class="btn btn-info btn-round btn-lg">Ajouter</a>
+                                            <rutu:if condition="${id}">
+                                                    <button type="submit" class="btn btn-info btn-round btn-lg">Editer</button>
+                                                <rutu:else/>
+                                                    <button type="submit" class="btn btn-info btn-round btn-lg">Ajouter</button>
+                                            </rutu:if>
                                             </div>
                                         </form>
                                     </div>

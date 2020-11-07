@@ -15,9 +15,12 @@ import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 import java.io.File;
 import java.io.IOException;
+import java.text.Normalizer;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.ListIterator;
+import java.util.regex.Pattern;
 
 public class DOMStudent {
     private static String studentsFileDir = "./src/main/resources/data/student_data.xml";
@@ -53,7 +56,7 @@ public class DOMStudent {
         return true;
     }
 
-    public boolean deleteStudent(Student student) throws ParserConfigurationException, SAXException, IOException {
+    public static boolean deleteStudent(Student student) throws ParserConfigurationException, SAXException, IOException {
         Document document = getDocument();
         document.getDocumentElement().normalize();
         System.out.println("Root element:" + document.getDocumentElement().getNodeName());
@@ -75,7 +78,7 @@ public class DOMStudent {
     }
 
     private void addStudent(Document document, Element element, Student student) {
-        Element elementStudent = document.createElement("Student");
+        Element elementStudent = document.createElement("student");
         elementStudent.setAttribute("id", String.valueOf(studentList.get(studentList.size()-1).getId()+1));
         addChildElement(elementStudent, "firstName", student.getFirstName());
         addChildElement(elementStudent, "lastName", student.getLastName());
@@ -204,4 +207,24 @@ public class DOMStudent {
         return arrayListToReturn;
     }
 
+    public static ArrayList<HashMap<String, Object>>  searchStudent(String search){
+        search = reformatAll(search);
+        ArrayList<HashMap<String,Object>> arrayListToReturn = new ArrayList<>();
+        ArrayList<HashMap<String, Object>> inputMap = toHashMap();
+        for (ListIterator<HashMap<String, Object>> it = inputMap.listIterator(); it.hasNext(); ) {
+            HashMap<String, Object> map = it.next();
+            if (String.valueOf(map.get("id")).equals(search)||
+                    reformatAll(String.valueOf(map.get("firstName"))).contains(search)||
+                    reformatAll(String.valueOf(map.get("lastName"))).contains(search)||
+                    reformatAll(String.valueOf(map.get("group"))).contains(search))
+                arrayListToReturn.add(map);
+        }
+        return arrayListToReturn;
+    }
+
+    private static String reformatAll(String str) {
+        String nfdNormalizedString = Normalizer.normalize(str, Normalizer.Form.NFD);
+        Pattern pattern = Pattern.compile("\\p{InCombiningDiacriticalMarks}+");
+        return pattern.matcher(nfdNormalizedString).replaceAll("").toLowerCase();
+    }
 }
