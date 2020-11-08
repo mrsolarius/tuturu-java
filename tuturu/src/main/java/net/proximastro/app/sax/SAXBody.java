@@ -1,7 +1,7 @@
-package net.proximastro.webserveur.sax;
+package net.proximastro.app.sax;
 
-import net.proximastro.webserveur.sax.component.XMLForEach;
-import net.proximastro.webserveur.sax.component.XMLif;
+import net.proximastro.app.sax.component.XMLForEach;
+import net.proximastro.app.sax.component.XMLif;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;

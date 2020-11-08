@@ -1,15 +1,12 @@
-package net.proximastro.webserveur.sax.component.struct;
+package net.proximastro.app.sax.component.struct;
 
-import net.proximastro.webserveur.sax.SAXBody;
+import net.proximastro.app.sax.SAXBody;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
-
-import org.w3c.dom.Document;
 
 import javax.xml.parsers.*;
 import java.io.IOException;
 import java.io.StringReader;
-import java.util.ArrayList;
 import java.util.HashMap;
 
 public class XMLBuilder {

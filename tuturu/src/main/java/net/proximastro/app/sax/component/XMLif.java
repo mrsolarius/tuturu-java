@@ -1,8 +1,8 @@
-package net.proximastro.webserveur.sax.component;
+package net.proximastro.app.sax.component;
 
-import net.proximastro.webserveur.sax.component.struct.ParseCondition;
-import net.proximastro.webserveur.sax.component.struct.XMLBuilder;
-import net.proximastro.webserveur.sax.component.struct.XMLDomBuilderInterface;
+import net.proximastro.app.sax.component.struct.ParseCondition;
+import net.proximastro.app.sax.component.struct.XMLBuilder;
+import net.proximastro.app.sax.component.struct.XMLDomBuilderInterface;
 import org.xml.sax.SAXException;
 
 import javax.xml.parsers.ParserConfigurationException;

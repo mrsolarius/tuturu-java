@@ -31,17 +31,218 @@
             <div class="main">
                 <div class="section section-basic" id="basic-elements">
                     <img src="assets/img/path1.png" class="path"></img>
-                    <div class="container">
+                    <div class="container mb-5">
                         <h1 class="title">Documentation du Projet</h1>
                         <h2 class="title">Intruduction</h2>
                         <p>Le but de se projet et de réaliser une application java capble d'assurer le role de serveur web ainci que d'assurer la sauvgarde et la mise en forme des données. Ceux à l'aide des deux parseur XML : le SAX et le DOM.</p>
                         <p>L'intert et double car en plus de nous faire découvrire les requete bas niveau proche de la couche réseau grace au socket. Se projet nous à permis d'améliorer nos conaissence sur le parseur DOM ainci que de découvrire l'utiliter et l'Interet du parseur SAX </p>
                     </div>
-                </div>
-                <div class="section section-basic">
-                    <img src="assets/img/path3.png" class="path"></img>
                     <div class="container">
-                        <h2 class="title">Information basique</h2>
+                        <ul class="nav nav-pills nav-pills-primary justify-content-center" role="tablist">
+                            <li style="z-index:20;" class="nav-item">
+                                <a class="nav-link active" data-toggle="tab" href="#framwork" role="tab" aria-expanded="true">
+                                    Documentation Framwork
+                                </a>
+                            </li>
+                            <li style="z-index:20;" class="nav-item">
+                                <a class="nav-link" data-toggle="tab" href="#projet" role="tab" aria-expanded="false">
+                                    Documentation Projet
+                                </a>
+                            </li>
+                        </ul>
+                        <div class="tab-content tab-space">
+                            <div class="tab-pane active" id="framwork" aria-expanded="true">
+                                <div class="mb-5">
+                                    <h1>Documentation du Framwork</h1>
+                                    <p>Pour réaliser le mini projet demander nous avons nous même était contrain de réaliser notre propre framwork.</p>
+                                    <p>Très inspirer de Laravel et du moteur de templating xlst/xpath celui ci à pour principal caractherirstique la simplification de tous les élement conue ainci que le maintient à la strict fonctionalitée.</p>
+                                    <br></br>
+                                    <p>Vous retrouverez ci dessous classer par fonctionalitée les différent élément dévlopper.</p>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-2">
+                                        <ul class="nav nav-pills nav-pills-primary flex-column">
+                                            <li class="nav-item"><a class="nav-link active" href="#routage" data-toggle="tab">Routage</a></li>
+                                            <li class="nav-item"><a class="nav-link" href="#controller" data-toggle="tab">Controller</a></li>
+                                            <li class="nav-item"><a class="nav-link" href="#templating" data-toggle="tab">Templating</a></li>
+                                        </ul>
+                                    </div>
+                                    <div class="col-md-10">
+                                        <div class="tab-content">
+                                            <div class="tab-pane active" id="routage">
+                                                <h1>Routage</h1>
+                                                <h2>Structure du fichier de route</h2>
+                                                <p>Le fichier de route doit obligatoirement se trouver dans le dossier <mark>/ressources/route/route.xml</mark>. Toutes les routes être présente dans la balise <mark>“routes”</mark>. Voici un exemple complet:</p>
+                                                <iframe src="/code/routeXML.html" style="width: 100%;" scrolling="no" frameborder="0" marginheight="0px" marginwidth="0px"></iframe>
+                                                <h2 class="mt-5">Structure du fichier de route</h2>
+                                                <p>Les routes “Tuturu” les plus basiques acceptent un URI un Contrôleur et une méthode très simple et expressive pour définir les routes:</p>
+                                                <iframe src="/code/routeSimple.html" style="width: 100%; height:50px" scrolling="no" frameborder="0" marginheight="0px" marginwidth="0px"></iframe>
+                                                <p>Chaque route possède une classe qui lui est associé. Cette classe doit obligatoirement se trouver dans le package <mark>“controller”</mark> et hériter de la classe “RouteController”.</p>
+                                                <p>Dans l’exemple ci-dessus, on indique que lorsque l’on accéde à <mark>http://host/test</mark> on appelle le contrôleur <mark>“ViewHomeController”</mark> qui n’est autre qu’une classe nommé “ViewHomeController.java” dans la package “controller”.</p>
+                                                <h2 class="mt-5">Méthodes de route disponibles</h2>
+                                                <p>Il est possible pour chaque route d’associer une ou plusieurs méthodes HTTP parmi les trois prise en charge : <mark>GET, HEAD, POST.</mark> Lorsque vous souhaiter utiliser plusieurs méthode il faut les séparer par un pipe (dans ce cas la méthode index du contrôleur sera appelée pour chacune des requêtes quelque soit la méthode):</p>
+                                                <iframe src="/code/routeMethode.html" style="width: 100%; height:50px" scrolling="no" frameborder="0" marginheight="0px" marginwidth="0px"></iframe>
+                                                <h2 class="mt-5">Variable de route</h2>
+                                                <p>Grâce à “tuturu” il est possible de créer des variables qui sont directement placées dans l’url. Pour se faire il suffit de mettre entre accolade le nom des variables à utiliser par exemple :</p>
+                                                <iframe class="mb-0" src="/code/routeVariable.html" style="width: 100%;" scrolling="no" frameborder="0" marginheight="0px" marginwidth="0px"></iframe>
+                                                <p>Il est possible de mettre autant de variable que l’on souhaite dans l’url tant qu’il y en a qu’une par slash ‘/’ et tant que celle ci ne partage pas le même nom.</p>
+                                                <a href="#controller" data-toggle="tab">Voir Parti RouteController pour voir comment les récupérer .</a>
+                                            </div>
+                                            <div class="tab-pane" id="controller">
+                                                <h1>Contrôleurs</h1>
+                                                <p>Chaque contrôleurs doivent hériter de la classe <mark>“RouteController”</mark>.</p>
+                                                <h2 class="mt-5">Controller basic</h2>
+                                                <p>Chaque contrôleurs nécessite un override de la méthode index à partir du moment ou l’on souhaite retourner le contenue d’une page. En effet le string renvoyé par la méthode index sera le corps de la page web (il peut s’agir d’un json, d’un xml, ou d’une page html) l’essentiel étant que le contenu soit sous la forme d’un  string.</p>
+                                                <iframe class="mb-0" src="/code/controllerSimple.html" style="width: 100%;" scrolling="no" frameborder="0" marginheight="0px" marginwidth="0px"></iframe>
+                                                <p>l’exemple ci-dessus renveras simplement une page qui affiche <strong>“bonjour monde”</strong></p>
+                                                <h2 class="mt-5">Variable de requête</h2>
+                                                <h3>Fontionement Global</h3>
+                                                <p>Tous type de variable de requête seront renvoyé sous la forme d’une <mark>“HashMap<span>&lt;</span>string, string<span></span>>“</mark> ( pour clé et valeur) qui est ensuite récupérable grâce à la classe dont laquelle on hérite.</p>
+                                                <h3 class="mt-5">Variable d'URI</h3>
+                                                <p>Comme indiquer dans la parti gestion de route celle ci permet de récupérer des variable depuis l’url. Par exemple :</p>
+                                                <p>On souhaite accéder à l’url <mark>http://host/views/casir/2</mark> avec la route suivante :</p>
+                                                <iframe class="mb-0" src="/code/routeVariable.html" style="width: 100%;height: 50px;" scrolling="no" frameborder="0" marginheight="0px" marginwidth="0px"></iframe>
+                                                <p>Afin de récupérer la valeur de “groupeName” et “idEtudiant” il suffis d’utiliser l’attribue “URIMap” et de récupérer ses valeurs par leurs clés indiqué dans la route. Par exemple : </p>
+                                                <iframe class="mb-0" src="/code/controllerDiplayURIParam.html" style="width: 100%;height: 50px;" scrolling="no" frameborder="0" marginheight="0px" marginwidth="0px"></iframe>
+                                                <h3 class="mt-5">Variable GET/POST</h3>
+                                                <p>
+                                                    La récupération des variables “GET et POST” fonctionnent exactement comme précédemment. La seule différence est que l’on utilisera la variable POSTMap pour les requêtes POST ou GETMap pour les requêtes GET. La clé permettant la récupération des données sera l’attribue name du formulaire ou les variables ?name pour les requêtes GET.
+                                                </p>
+                                                <h4>Exemple GET : </h4>
+                                                <img src="assets/img/path3.png" class="path"></img>
+                                                <p><mark>http://host/?success=add&amp;message=bravo</mark></p>
+                                                <pre class="hljs" style="display: block; overflow-x: auto; padding: 0.5em; background: rgb(0, 43, 54); color: rgb(131, 148, 150);">system.out.println(GETMap.get(“success”) + “ - ” + GETMap.get(“message”)); <span class="hljs-comment" style="color: rgb(88, 110, 117);">//affichera ”add - bravo”</span></pre>
+                                                <h4>Exemple POST : </h4>
+                                                <iframe class="mb-2" src="/code/formPostExemple.html" style="width: 100%;    height: 100;" scrolling="no" frameborder="0" marginheight="0px" marginwidth="0px"></iframe>
+                                                <p>Une fois le formulaire “POST” Transmis, nous exécuteron la ligne suivante dans le contrôleur.</p>
+                                                <pre class="hljs" style="display: block; overflow-x: auto; padding: 0.5em; background: rgb(0, 43, 54); color: rgb(131, 148, 150);">system.out.println(POSTMap.get(“nom”) + “ - ” + POSTMap.get(“prenom”)); <span class="hljs-comment" style="color: rgb(88, 110, 117);">//affichera ”Tim - Gimenez”</span></pre>
+                                                <h2 class="mt-5">Gestion des redirection</h2>
+                                                <p>Enfin, il est possible de faire une redirection à la fin d’un traitement dans un contrôleur.</p>
+                                                <p>Si vous souhaiter faire une redirection il suffit simplement de faire dans la méthode index de votre contrôleur un <mark>return “301 http://host/votre/url/de/destination”</mark>. Cela aura pour effet de crée une redirection permanente vers l’url demander</p>
+
+                                            </div>
+                                            <div class="tab-pane" id="templating">
+                                                <h1>Rututu Moteur de templating</h1>
+                                                <h2>Introduction</h2>
+                                                <p>Rututu est un moteur de création de modèle HTML simple et puissant et se base sur du XML.</p>
+                                                <p>Le templating “tuturu” permet de retourner une page HTML en partant d’un fichier XML. L’intérêt est de pouvoir placer et utiliser des variable dans le document HTML.
+                                                    Chaque fichier XML comportant le template doit être enregistré dans le package “ressources/views”.
+                                                    Dans chaque fichier XML, il est possible d’écrire du html (dans des balises xml). Chaque baslise de templating (donc pas d’html) commensera par “rutu:”</p>
+                                                <h2 class="mt-5">Lancement de RUTUTU</h2>
+                                                <p>Pour utiliser le moteur de template il suffit de créer une HashMap<span>&lt;</span>string, Object<span/>> contentant les variable à afficher sur la page. Puis d’appeler la class SAXBody avec le parseur SAX. Suite à cela, il faut préciser l’emplacement du fichier XML avant d’appeler la méthode getHtmlCorps():</p>
+                                                <h4>Exemple :</h4>
+                                                <iframe class="mb-2" src="/code/exempleUtilisationRututu.html" style="width: 100%;    height: 100px" scrolling="no" frameborder="0" marginheight="0px" marginwidth="0px"></iframe>
+                                                <h2 class="mt-5">Include de model</h2>
+                                                <p>Comme nous somme en XML nous avons la possibilité d’inclure d’autre fichier de impatiente se trouvant à d’autre endroit. Les ficher à inclure doivent se trouver dans une balise <mark>rutu:doNothing</mark></p>
+                                                <h4>Exemple :</h4>
+                                                <p>Fichier à inclure :</p>
+                                                <iframe class="mb-2" src="/code/includexml.html" style="width: 100%;    height: 100px" scrolling="no" frameborder="0" marginheight="0px" marginwidth="0px"></iframe>
+                                                <p>Fichier source :</p>
+                                                <iframe class="mb-2" src="/code/sourcexml.html" style="width: 100%;height: 200px;" scrolling="no" frameborder="0" marginheight="0px" marginwidth="0px"></iframe>
+                                                <p>Doneras :</p>
+                                                <iframe class="mb-2" src="/code/htmlfinal.html" style="width: 100%;height: 100px;" scrolling="no" frameborder="0" marginheight="0px" marginwidth="0px"></iframe>
+                                                <h2 class="mt-5">Variables</h2>
+                                                <img src="assets/img/path3.png" class="path"></img>
+                                                <p>Avec rututu, il est possible d’inclure des variables dans les attributs de chaque balises ainsi qu’entre deux balise (en tant que texte).</p>
+                                                <h4>Exemple “en tant qu’attribut”:</h4>
+                                                <p>Si SAXBody à été créé avec cette hashmap en paramètre:</p>
+                                                <pre class="hljs" style="display: block; overflow-x: auto; padding: 0.5em; background: rgb(0, 43, 54); color: rgb(131, 148, 150);">{{ “groupeEtudiant”,“casir”},{“idEtudiant”, “<span class="hljs-number" style="color: rgb(42, 161, 152);">2</span>”}}</pre>
+                                                <iframe class="mb-2" src="/code/htmlaexemple.html" style="width: 100%;height: 50px;" scrolling="no" frameborder="0" marginheight="0px" marginwidth="0px"></iframe>
+                                                <p>Donnera :</p>
+                                                <iframe class="mb-2" src="/code/htmlaexemplefinal.html" style="width: 100%;height: 50px;" scrolling="no" frameborder="0" marginheight="0px" marginwidth="0px"></iframe>
+                                                <h4>Exemple “entre deux balise”:</h4>
+                                                <p>Si SAXBody à était crée avec cette hashmap en paramètre:</p>
+                                                <pre class="hljs" style="display: block; overflow-x: auto; padding: 0.5em; background: rgb(0, 43, 54); color: rgb(131, 148, 150);">{{ “nom”,“volat”},{“prenom ”, “louis”}}</pre>
+                                                <iframe class="mb-2" src="/code/htmlExempleInnerVar.html" style="width: 100%;height: 50px;" scrolling="no" frameborder="0" marginheight="0px" marginwidth="0px"></iframe>
+                                                <p>Donnera :</p>
+                                                <iframe class="mb-2" src="/code/htmlExempleInnerVar.html" style="width: 100%;height: 50px;" scrolling="no" frameborder="0" marginheight="0px" marginwidth="0px"></iframe>
+                                                <h2 class="mt-5">Structure de contrôle</h2>
+                                                <h3>Conditions</h3>
+                                                <p>Avec Rututu il est possible d'inclure des balises de conditions.</p>
+                                                <p>Ces conditions sont composé de “Si” avec la condition en attribut &lt;<mark>rutu:if condition=“x == b”</mark>&gt; et “Sinon” &lt;<mark>rutu:else</mark>/&gt;.</p>
+                                                <p>Dans l’attribut condition, il est possible d’utiliser les opérateurs conditionelles suivant :</p>
+                                                <ul>
+                                                    <li>&amp;&amp;,</li>
+                                                    <li>||,</li>
+                                                    <li>>,</li>
+                                                    <li>>=,</li>
+                                                    <li>==,</li>
+                                                    <li>!=,</li>
+                                                    <li><span>&lt;</span>=,</li>
+                                                    <li><span>&lt;</span>,</li>
+                                                </ul>
+                                                <p>Enfin, si une variable se trouve seule dans la condition on vas tout d’abord vérifier qu’elle existe dans la hashmap puis, si c’est le cas, si c’est un bouléen, sa valeur sert de condition sinon, (si elle est présente et n’est pas un bouléen) on renvoie true. Si elle n’est pas présente du tous on renvoie false.</p>
+                                                <h4>Voici un exemple :</h4>
+                                                <img src="assets/img/path4.png" class="path"></img>
+                                                <p>Admettons que nous avons une <mark>HashMap<span>&lt;</span>String, Object<span></span>></mark> avec le contenue suivant :</p>
+                                                <pre class="hljs" style="display: block; overflow-x: auto; padding: 0.5em; background: rgb(0, 43, 54); color: rgb(131, 148, 150);">{{“id”, <span class="hljs-number" style="color: rgb(42, 161, 152);">0</span>}}</pre>
+                                                <p>On appelle le template suivant :</p>
+                                                <iframe class="mb-2" src="/code/xmlf.html" style="width: 100%;height: 200px;" scrolling="no" frameborder="0" marginheight="0px" marginwidth="0px"></iframe>
+                                                <p>Le résultat sera :</p>
+                                                <iframe class="mb-2" src="/code/xmlfres.html" style="width: 100%;height: 50px;" scrolling="no" frameborder="0" marginheight="0px" marginwidth="0px"></iframe>
+                                                <p>Car l’id de la HashMap est bien égale à 0 et la variable est inférieur ou égal à 1.</p>
+                                                <p>Le <span>&lt;</span>rutu:else<span></span>> n’est pas obligatoire, il s’exécute juste lorsque la condition “si” n’est pas valide.</p>
+                                                <h3 class="mt-5">Boucles</h3>
+                                                <p>Le foreach est une structure de contrôle permettant d’appeler plusieurs fois une parti du code XML en fonction des paramètres présent dans la HashMap.</p>
+                                                <p>Pour sa mise en place, il nécessite que l’objet rentré en sélection soit présent dans la HashMap rentré en paramètre de SAXBody sous la forme d’une <mark>“ArrayList”</mark> contenant une hashmap d’objet (<mark>ArrayList<span>&lt;</span>HashMap<span>&lt;</span>String,Object<span/>><span/>></mark>).</p>
+                                                <p>Dans une boucle “for-each” absolument toutes les autre structures de contrôle (if, foreach, value-of) et variable peuvent être mise en place à l’intérieur d’un for-each.</p>
+                                                <h4>Exemple simple :</h4>
+                                                <p>Si SAXBody à été créé avec cette hashmap en paramètre:</p>
+                                                <iframe class="mb-2" src="/code/hashmapForSimple.html" style="width: 100%;height: 170px;" scrolling="no" frameborder="0" marginheight="0px" marginwidth="0px"></iframe>
+                                                <p>Et que le XML appelé contient :</p>
+                                                <iframe class="mb-2" src="/code/foreatchSimple.html" style="width: 100%;height: 100px;" scrolling="no" frameborder="0" marginheight="0px" marginwidth="0px"></iframe>
+                                                <p>Alors le résultat sera :</p>
+                                                <iframe class="mb-2" src="/code/foreatchSimpleRes.html" style="width: 100%;height: 100px;" scrolling="no" frameborder="0" marginheight="0px" marginwidth="0px"></iframe>
+                                                <img src="assets/img/path5.png" class="path"></img>
+                                                <h4>Exemple complex :</h4>
+                                                <p>Si SAXBody à est crée avec la hashmap suivante :</p>
+                                                <iframe class="mb-2" src="/code/hashmapForComplex.html" style="width: 100%;height: 450px;" scrolling="no" frameborder="0" marginheight="0px" marginwidth="0px"></iframe>
+                                                <p>Et que le XML est le suivant :</p>
+                                                <iframe class="mb-2" src="/code/xmlForComplex.html" style="width: 100%;height: 200px;" scrolling="no" frameborder="0" marginheight="0px" marginwidth="0px"></iframe>
+                                                <p>Alors le résultat sera :</p>
+                                                <iframe class="mb-2" src="/code/xmlForComplexRes.html" style="width: 100%;height: 400px;" scrolling="no" frameborder="0" marginheight="0px" marginwidth="0px"></iframe>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="tab-pane" id="projet" aria-expanded="false">
+                                <h1>Tuturu - Java Creative Project</h1>
+                                <p>Tuturu est une applications de gestion d’étudiants.</p>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <img src="/assets/img/TuturuHome.png"></img>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <p>En haut à droite, vous pouvez accéder à la page contenant la liste des étudiants (“Etudiants”) ou la page “Ajouter” (qui permet d’accéder à la page d’ajout d’un étudiant) ou rechercher des étudiants (depuis la barre de recherche).</p>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <img src="/assets/img/TuturuView.png"></img>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <p>Si nous accédons à la page étudiant, nous pouvons observer tous les étudiant comme ci-contre.</p>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <img src="/assets/img/TuturuAdd.png"></img>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <p>Enfin, la dernière page est la page d’ajout et de modification d’étudiant. Elle apparait lorsque l’on souhaite modifier un étudiant existant depuis la liste des étudiant ou que l’on a cliqué sur l’élément ajouter dans la barre de navigation.</p>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <img src="/assets/img/TuturuEdit.png"></img>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <p>Comme vous pouvez le constater, la page reste la même hormis les textes. Celle-ci comporte un formulaire capable d’ajouter ou de modifier un étudiant en fonction de son id.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
