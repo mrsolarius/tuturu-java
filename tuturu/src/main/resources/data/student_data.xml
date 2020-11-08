@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8" standalone="no"?><students>
     <student id="1">
         <firstName>Jean-michel</firstName>
-        <lastName>Blancaire</lastName>
+        <lastName>Crapeau</lastName>
         <group>La République En Marche</group>
     </student>
     <student id="2">

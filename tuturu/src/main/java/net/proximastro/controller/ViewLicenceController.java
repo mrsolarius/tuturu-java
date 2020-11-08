@@ -1,6 +1,5 @@
 package net.proximastro.controller;
 
-import net.proximastro.app.PATH;
 import net.proximastro.app.RouteController;
 import net.proximastro.webserveur.sax.SAXBody;
 import org.xml.sax.SAXException;
@@ -28,7 +27,7 @@ public class ViewLicenceController extends RouteController {
         SAXBody handler = new SAXBody(ht);
         SAXParserFactory parserFactory = SAXParserFactory.newInstance();
         SAXParser parser = parserFactory.newSAXParser();
-        parser.parse(PATH.viewPATH+"/pages/viewLicence.xml", handler);
+        parser.parse("./src/main/resources/views/pages/viewLicence.xml", handler);
         return handler.getHtmlCorps();
     }
 }

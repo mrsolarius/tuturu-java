@@ -20,7 +20,7 @@ import java.util.HashMap;
 import java.util.List;
 
 public class ControllerManager {
-    static final String ROUTES_EMPLACEMENT = PATH.routePATH;
+    static final String ROUTES_EMPLACEMENT = "src/main/resources/routes/routes.xml";
     private HashMap<String,RouteController> routeControllers;
 
     public ControllerManager(){
@@ -28,8 +28,7 @@ public class ControllerManager {
         this.routeControllers = new HashMap<>();
         try {
             //récupération du fichier des routes
-            URL fileURL = this.getClass().getResource(ROUTES_EMPLACEMENT);
-            File file = new File(String.valueOf(fileURL));
+            File file = new File(ROUTES_EMPLACEMENT);
             DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
             DocumentBuilder db = dbf.newDocumentBuilder();
             //récupération du DOM

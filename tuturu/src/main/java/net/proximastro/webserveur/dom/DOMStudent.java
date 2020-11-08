@@ -1,6 +1,5 @@
 package net.proximastro.webserveur.dom;
 
-import net.proximastro.app.PATH;
 import net.proximastro.webserveur.model.Student;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -24,7 +23,7 @@ import java.util.ListIterator;
 import java.util.regex.Pattern;
 
 public class DOMStudent {
-    private static String studentsFileDir = PATH.dataPATH;
+    private static String studentsFileDir = "./src/main/resources/data/student_data.xml";
     private static List<Student> studentList;
 
     public DOMStudent(){
