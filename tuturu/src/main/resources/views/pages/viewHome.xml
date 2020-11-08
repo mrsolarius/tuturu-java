@@ -24,7 +24,7 @@
                     <div class="content-center brand">
                         <h1 class="h1-seo">TUTURU•</h1>
                         <h2 style="color: #ffffff;font-weight: 1000;font-size: 2rem;">シュタインズ・ゲート</h2>
-                        <h3>Le Fantastique Framwork Sponsorisé par Steins Gate.</h3>
+                        <h3>Le Fantastique Framework Sponsorisé par Steins Gate.</h3>
                     </div>
                 </div>
             </div>
@@ -34,8 +34,8 @@
                     <div class="container">
                         <h1 class="title">Documentation du Projet</h1>
                         <h2 class="title">Intruduction</h2>
-                        <p>Le but de se projet et de réaliser une application java capble d'assurer le role de serveur web ainci que d'assurer la sauvgarde et la mise en forme des données. Ceux à l'aide des deux parseur XML : le SAX et le DOM.</p>
-                        <p>L'intert et double car en plus de nous faire découvrire les requete bas niveau proche de la couche réseau grace au socket. Se projet nous à permis d'améliorer nos conaissence sur le parseur DOM ainci que de découvrire l'utiliter et l'Interet du parseur SAX </p>
+                        <p>Le but de ce projet et de réaliser une application java capable d'assurer le role de serveur web ainsi que d'assurer la sauvegarde et la mise en forme des données. Tout ça à l'aide des deux parseur XML : le SAX et le DOM.</p>
+                        <p>L'intéret est double car en plus de nous faire découvrir les requêtes bas niveau proche de la couche réseau grâce au socket, ce projet nous a permis d'améliorer nos connaissances sur le parseur DOM ainsi que de découvrir l'utilité et l'interet du parseur SAX</p>
                     </div>
                 </div>
                 <div class="section section-basic">

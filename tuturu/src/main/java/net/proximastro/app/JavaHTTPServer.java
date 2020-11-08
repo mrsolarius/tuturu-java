@@ -44,13 +44,13 @@ public class JavaHTTPServer implements Runnable{
         try {
             System.out.println(WEB_ROOT.getPath());
             ServerSocket serverConnect = new ServerSocket(PORT);
-            System.out.println("Le Server démmare...\nIl écoute sur le port : " + PORT + " ...\n");
+            System.out.println("Le Serveur démarre...\nIl écoute sur le port : " + PORT + " ...\n");
             // écoute des requete des utilisateur utilisateur dans une boucle infini
             while (true) {
                 JavaHTTPServer myServer = new JavaHTTPServer(serverConnect.accept());
 
                 if (verbose) {
-                    System.out.println("Ouverture de la connection. ( le " + new Date() + ")");
+                    System.out.println("Ouverture de la connexion. ( le " + new Date() + ")");
                 }
 
                 // Création d'un thread dedier au serveur
@@ -68,7 +68,7 @@ public class JavaHTTPServer implements Runnable{
         // gestion des cas particulier des connexion client
         BufferedReader in = null; PrintWriter out = null; BufferedOutputStream dataOut = null;
         String URI = null;
-        System.out.println("nouvelle requette entrente");
+        System.out.println("nouvelle requette");
         try {
 
             // récupération du header avec le buffer reader
@@ -106,7 +106,7 @@ public class JavaHTTPServer implements Runnable{
                         dataOut.flush();
 
                         if (verbose) {
-                            System.out.println("La route " + routeURI + " à bien était rendu");
+                            System.out.println("La route " + routeURI + " à bien été rendu");
                         }
 
                     } else {
@@ -127,7 +127,7 @@ public class JavaHTTPServer implements Runnable{
                         }
 
                         if (verbose) {
-                            System.out.println("Le fichier " + URI + " du type " + content + " et envoyer");
+                            System.out.println("Le fichier " + URI + " du type " + content + " est envoyer");
                         }
                     }
                     break;
@@ -164,7 +164,7 @@ public class JavaHTTPServer implements Runnable{
                         }
 
                         if (verbose) {
-                            System.out.println("La route " + routeURI + " à bien était rendu");
+                            System.out.println("La route " + routeURI + " à bien été rendu");
                         }
                     }else{
                         fileNotFound(out, dataOut, URI);
@@ -172,7 +172,7 @@ public class JavaHTTPServer implements Runnable{
                     break;
                 default:
                     if (verbose) {
-                        System.out.println("501 La methode : " + method + " n'est pas implementer.");
+                        System.out.println("501 La methode : " + method + " n'est pas implementé.");
                     }
                     // renvoie du fichier au client
                     File file = new File(WEB_ROOT, METHOD_NOT_SUPPORTED);
@@ -180,7 +180,7 @@ public class JavaHTTPServer implements Runnable{
                     String contentMimeType = "text/html";
                     //Lecture du fichier à envoyer au client
                     byte[] fileData = readFileData(file, fileLength);
-                    out.println(headerBuilder(501,"C'est pas encore implementer",null,fileLength));
+                    out.println(headerBuilder(501,"C'est pas encore implementé",null,fileLength));
                     out.println();
                     out.flush();
                     //ecriture du contenu
@@ -191,7 +191,7 @@ public class JavaHTTPServer implements Runnable{
             try {
                 fileNotFound(out, dataOut, URI);
             } catch (IOException ioe) {
-                System.err.println("Erreur le fichier na pas était trouver : " + ioe.getMessage());
+                System.err.println("Erreur le fichier n'a pas été trouvé : " + ioe.getMessage());
             }
 
         } catch (IOException ioe) {
@@ -207,7 +207,7 @@ public class JavaHTTPServer implements Runnable{
             }
 
             if (verbose) {
-                System.out.println("Fermeture de la conexion.\n");
+                System.out.println("Fermeture de la connexion.\n");
             }
         }
 
