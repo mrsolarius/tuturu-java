@@ -1,7 +1,7 @@
-package net.proximastro.app.sax;
+package net.proximastro.app.rututu;
 
-import net.proximastro.app.sax.component.XMLForEach;
-import net.proximastro.app.sax.component.XMLif;
+import net.proximastro.app.rututu.component.XMLForEach;
+import net.proximastro.app.rututu.component.XMLif;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
@@ -13,7 +13,7 @@ import java.util.HashMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class SAXBody extends DefaultHandler {
+public class RututuBody extends DefaultHandler {
     private HashMap<String, Object> parms;
     private StringBuilder htmlCorps;
 
@@ -21,7 +21,7 @@ public class SAXBody extends DefaultHandler {
     private XMLif xmlIf;
     private XMLForEach xmlForEach;
 
-    public SAXBody(HashMap<String, Object> parms) {
+    public RututuBody(HashMap<String, Object> parms) {
         super();
         htmlCorps = new StringBuilder();
         this.parms = parms;

@@ -2,7 +2,7 @@ package net.proximastro.controller;
 
 import net.proximastro.app.RouteController;
 import net.proximastro.webserveur.dom.DOMStudent;
-import net.proximastro.app.sax.SAXBody;
+import net.proximastro.app.rututu.RututuBody;
 import org.xml.sax.SAXException;
 
 import javax.xml.parsers.ParserConfigurationException;
@@ -33,7 +33,7 @@ public class ViewStudentsController extends RouteController {
             ht.put("success",GETMap.get("success"));
         if (GETMap.containsKey("error"))
             ht.put("error",GETMap.get("error"));
-        SAXBody handler = new SAXBody(ht);
+        RututuBody handler = new RututuBody(ht);
         SAXParserFactory parserFactory = SAXParserFactory.newInstance();
         SAXParser parser = parserFactory.newSAXParser();
         parser.parse("./src/main/resources/views/pages/viewStudents.xml", handler);

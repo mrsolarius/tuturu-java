@@ -1,6 +1,6 @@
-package net.proximastro.app.sax.component.struct;
+package net.proximastro.app.rututu.component.struct;
 
-import net.proximastro.app.sax.SAXBody;
+import net.proximastro.app.rututu.RututuBody;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
@@ -29,7 +29,7 @@ public class XMLBuilder {
 
     protected String buildHtml(HashMap<String,Object> param) throws ParserConfigurationException, IOException, SAXException {
         if (!tempXMLBuilder.toString().endsWith("</rutu:doNothing>"))tempXMLBuilder.append("</rutu:doNothing>");
-        SAXBody handler = new SAXBody(param);
+        RututuBody handler = new RututuBody(param);
         SAXParserFactory parserFactory = SAXParserFactory.newInstance();
         SAXParser parser = parserFactory.newSAXParser();
         InputSource is = new InputSource(new StringReader(tempXMLBuilder.toString()));

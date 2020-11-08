@@ -4,7 +4,7 @@ package net.proximastro.controller;
 import net.proximastro.app.RouteController;
 import net.proximastro.webserveur.dom.DOMStudent;
 import net.proximastro.webserveur.model.Student;
-import net.proximastro.app.sax.SAXBody;
+import net.proximastro.app.rututu.RututuBody;
 import org.xml.sax.SAXException;
 
 import javax.xml.parsers.ParserConfigurationException;
@@ -61,7 +61,7 @@ public class AddOrUpdateStudentController extends RouteController {
 
 
     public String parse(HashMap<String, Object> map) throws SAXException, IOException, ParserConfigurationException {
-        SAXBody handler = new SAXBody(map);
+        RututuBody handler = new RututuBody(map);
         SAXParserFactory parserFactory = SAXParserFactory.newInstance();
         SAXParser parser = parserFactory.newSAXParser();
         parser.parse("./src/main/resources/views/pages/addStudent.xml", handler);

@@ -1,7 +1,7 @@
 package net.proximastro.controller;
 
 import net.proximastro.app.RouteController;
-import net.proximastro.app.sax.SAXBody;
+import net.proximastro.app.rututu.RututuBody;
 import org.xml.sax.SAXException;
 
 import javax.xml.parsers.ParserConfigurationException;
@@ -24,7 +24,7 @@ public class ViewHomeController extends RouteController {
 
     public String parse() throws SAXException, IOException, ParserConfigurationException {
         HashMap<String,Object> ht = new HashMap<String,Object>();
-        SAXBody handler = new SAXBody(ht);
+        RututuBody handler = new RututuBody(ht);
         SAXParserFactory parserFactory = SAXParserFactory.newInstance();
         SAXParser parser = parserFactory.newSAXParser();
         parser.parse("./src/main/resources/views/pages/viewHome.xml", handler);

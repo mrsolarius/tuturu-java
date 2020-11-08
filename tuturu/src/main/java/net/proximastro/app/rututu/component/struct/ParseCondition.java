@@ -1,4 +1,4 @@
-package net.proximastro.app.sax.component.struct;
+package net.proximastro.app.rututu.component.struct;
 
 import java.util.Arrays;
 import java.util.HashMap;

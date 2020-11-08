@@ -1,4 +1,4 @@
-package net.proximastro.app.sax.component.struct;
+package net.proximastro.app.rututu.component.struct;
 
 import org.xml.sax.SAXException;
 
