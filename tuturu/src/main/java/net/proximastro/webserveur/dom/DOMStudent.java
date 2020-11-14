@@ -120,7 +120,6 @@ public class DOMStudent {
 
                 return true;
             }
-            i++;
         }
         return false;
     }
