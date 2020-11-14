@@ -72,7 +72,6 @@ public class DOMStudent {
                 saveXMLContent(document, studentsFileDir);
                 return true;
             }
-            i++;
         }
         return false;
     }
