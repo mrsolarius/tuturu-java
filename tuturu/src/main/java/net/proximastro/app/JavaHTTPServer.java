@@ -1,5 +1,7 @@
 package net.proximastro.app;
 
+import net.proximastro.Path;
+
 import javax.sound.midi.Soundbank;
 import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
@@ -18,10 +20,12 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.StringTokenizer;
 
+import static net.proximastro.Path.getPath;
+
 // chaque client et récupérer dans un seul thread
 public class JavaHTTPServer implements Runnable{
 
-    static final File WEB_ROOT = new File("src/main/resources/public");
+    static final File WEB_ROOT = new File(getPath()+"public");
     static final String DEFAULT_FILE = "index.html";
     static final String FILE_NOT_FOUND = "404.html";
     static final String METHOD_NOT_SUPPORTED = "500.html";
@@ -42,7 +46,7 @@ public class JavaHTTPServer implements Runnable{
 
     public static void main(String[] args) {
         try {
-            System.out.println(WEB_ROOT.getPath());
+            System.out.println("Localisation du répértoire : "+getPath());
             ServerSocket serverConnect = new ServerSocket(PORT);
             System.out.println("Le Serveur démarre...\nIl écoute sur le port : " + PORT + " ...\n");
             // écoute des requete des utilisateur utilisateur dans une boucle infini
@@ -196,6 +200,8 @@ public class JavaHTTPServer implements Runnable{
 
         } catch (IOException ioe) {
             System.err.println("Erreur serveur : " + ioe);
+        } catch (Exception e) {
+            e.printStackTrace();
         } finally {
             try {
                 in.close();
