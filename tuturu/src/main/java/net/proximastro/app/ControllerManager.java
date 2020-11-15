@@ -19,8 +19,10 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
+import static net.proximastro.Path.getPath;
+
 public class ControllerManager {
-    static final String ROUTES_EMPLACEMENT = "src/main/resources/routes/routes.xml";
+    static final String ROUTES_EMPLACEMENT = getPath()+"/routes/routes.xml";
     private HashMap<String,RouteController> routeControllers;
 
     public ControllerManager(){

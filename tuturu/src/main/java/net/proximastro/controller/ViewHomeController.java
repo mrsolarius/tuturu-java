@@ -10,6 +10,8 @@ import javax.xml.parsers.SAXParserFactory;
 import java.io.IOException;
 import java.util.HashMap;
 
+import static net.proximastro.Path.getPath;
+
 public class ViewHomeController extends RouteController {
 
     @Override
@@ -27,7 +29,7 @@ public class ViewHomeController extends RouteController {
         RututuBody handler = new RututuBody(ht);
         SAXParserFactory parserFactory = SAXParserFactory.newInstance();
         SAXParser parser = parserFactory.newSAXParser();
-        parser.parse("./src/main/resources/views/pages/viewHome.xml", handler);
+        parser.parse(getPath()+"views/pages/viewHome.xml", handler);
         return handler.getHtmlCorps();
     }
 }

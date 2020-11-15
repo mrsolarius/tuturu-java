@@ -13,6 +13,8 @@ import javax.xml.parsers.SAXParserFactory;
 import java.io.IOException;
 import java.util.HashMap;
 
+import static net.proximastro.Path.getPath;
+
 public class AddOrUpdateStudentController extends RouteController {
 
     public AddOrUpdateStudentController(){
@@ -64,7 +66,7 @@ public class AddOrUpdateStudentController extends RouteController {
         RututuBody handler = new RututuBody(map);
         SAXParserFactory parserFactory = SAXParserFactory.newInstance();
         SAXParser parser = parserFactory.newSAXParser();
-        parser.parse("./src/main/resources/views/pages/addStudent.xml", handler);
+        parser.parse(getPath()+"views/pages/addStudent.xml", handler);
         return handler.getHtmlCorps();
     }
 }

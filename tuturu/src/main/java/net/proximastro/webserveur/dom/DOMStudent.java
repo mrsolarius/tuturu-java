@@ -22,8 +22,10 @@ import java.util.List;
 import java.util.ListIterator;
 import java.util.regex.Pattern;
 
+import static net.proximastro.Path.getPath;
+
 public class DOMStudent {
-    private static String studentsFileDir = "./src/main/resources/data/student_data.xml";
+    private static String studentsFileDir = getPath()+"data/student_data.xml";
     private static List<Student> studentList;
 
     public DOMStudent(){
@@ -79,7 +81,10 @@ public class DOMStudent {
 
     private void addStudent(Document document, Element element, Student student) {
         Element elementStudent = document.createElement("student");
-        elementStudent.setAttribute("id", String.valueOf(studentList.get(studentList.size()-1).getId()+1));
+        if (studentList.size()>0)
+            elementStudent.setAttribute("id", String.valueOf(studentList.get(studentList.size()-1).getId()+1));
+        else
+            elementStudent.setAttribute("id", String.valueOf(1));
         addChildElement(elementStudent, "firstName", student.getFirstName());
         addChildElement(elementStudent, "lastName", student.getLastName());
         addChildElement(elementStudent, "group", student.getGroup());

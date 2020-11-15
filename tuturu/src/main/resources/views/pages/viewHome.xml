@@ -1,4 +1,4 @@
-<?xml version="1.0" standalone="no" ?>
+<?xml version="1.0" standalone="no" encoding = "utf-8"?>
 <!DOCTYPE doc [
         <!ENTITY nav SYSTEM "../scaffolding/nav.xml">
         <!ENTITY head SYSTEM "../scaffolding/head.xml">

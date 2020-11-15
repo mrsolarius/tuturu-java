@@ -11,6 +11,8 @@ import javax.xml.parsers.SAXParserFactory;
 import java.io.IOException;
 import java.util.HashMap;
 
+import static net.proximastro.Path.getPath;
+
 
 public class ViewStudentsController extends RouteController {
 
@@ -36,7 +38,7 @@ public class ViewStudentsController extends RouteController {
         RututuBody handler = new RututuBody(ht);
         SAXParserFactory parserFactory = SAXParserFactory.newInstance();
         SAXParser parser = parserFactory.newSAXParser();
-        parser.parse("./src/main/resources/views/pages/viewStudents.xml", handler);
+        parser.parse(getPath()+"/views/pages/viewStudents.xml", handler);
         return handler.getHtmlCorps();
     }
 }
